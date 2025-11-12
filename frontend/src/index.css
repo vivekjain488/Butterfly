@@ -1,0 +1,105 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Sixtyfour&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --bg: #000814;
+  --teal: #00FFE1;
+  --teal-dark: #00ADB5;
+  --accent: #00B3A6;
+}
+
+body {
+  margin: 0;
+  font-family: 'Inter', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background: linear-gradient(180deg, #000814, #001022);
+  background-attachment: fixed;
+  color: var(--teal);
+  min-height: 100vh;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
+}
+
+.glass-card {
+  background: rgba(10, 10, 10, 0.6);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(0, 255, 225, 0.2);
+  border-radius: 12px;
+  box-shadow: 0 0 10px rgba(0, 255, 225, 0.15);
+  transition: all 0.3s ease;
+}
+
+.glass-card:hover {
+  border-color: rgba(0, 255, 225, 0.4);
+  box-shadow: 0 0 20px rgba(0, 255, 225, 0.25);
+}
+
+.neon-text {
+  text-shadow: 0 0 10px rgba(0, 255, 225, 0.3);
+}
+
+.neon-border {
+  border: 1px solid var(--teal);
+  box-shadow: 0 0 10px rgba(0, 255, 225, 0.3), inset 0 0 10px rgba(0, 255, 225, 0.1);
+}
+
+.btn-primary {
+  @apply bg-gradient-to-r from-teal-dark to-accent text-cyber-bg font-bold py-3 px-6 rounded-lg;
+  @apply hover:shadow-neon-strong transition-all duration-300;
+  @apply transform hover:scale-105;
+}
+
+.btn-secondary {
+  @apply bg-transparent border-2 border-teal-neon text-teal-neon font-bold py-2 px-5 rounded-lg;
+  @apply hover:bg-teal-neon hover:text-cyber-bg transition-all duration-300;
+}
+
+.input-cyber {
+  @apply bg-cyber-dark border border-teal-dark rounded-lg px-4 py-2 text-teal-neon;
+  @apply focus:outline-none focus:border-teal-neon focus:shadow-neon;
+  @apply transition-all duration-300;
+}
+
+.section-title {
+  @apply font-heading text-3xl md:text-4xl text-teal-neon neon-text mb-6;
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #000814;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--teal-dark);
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--teal);
+}
+
+/* Animation for loading states */
+@keyframes shimmer {
+  0% {
+    background-position: -1000px 0;
+  }
+  100% {
+    background-position: 1000px 0;
+  }
+}
+
+.loading-shimmer {
+  animation: shimmer 2s infinite;
+  background: linear-gradient(to right, #000814 4%, #00ADB5 25%, #000814 36%);
+  background-size: 1000px 100%;
+}
