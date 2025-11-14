@@ -21,9 +21,9 @@ function App() {
   const [isEncrypting, setIsEncrypting] = useState(false);
 
   return (
-    <div className="min-h-screen relative overflow-hidden">
-      {/* Background attractor - always visible */}
-      <div className="fixed inset-0 z-0 opacity-20">
+    <div className="min-h-screen relative overflow-hidden bg-gradient-to-br from-bg-primary via-bg-secondary to-bg-primary">
+      {/* Background attractor - subtle for light theme, pointer events disabled */}
+      <div className="fixed inset-0 z-0 opacity-10 pointer-events-none" style={{pointerEvents: 'none', zIndex: 0}}>
         <AttractorVisualization 
           params={params} 
           mixing={mixing}
@@ -32,46 +32,55 @@ function App() {
       </div>
 
       {/* Main content */}
-      <div className="relative z-10">
+      <div className="relative" style={{zIndex: 100, pointerEvents: 'auto'}}>
         <Header />
         
-        <main className="container mx-auto px-4 py-8 space-y-8">
-          {/* Parameter Controls */}
-          <ParameterControls 
-            params={params}
-            setParams={setParams}
-            mixing={mixing}
-            setMixing={setMixing}
-          />
+        <main className="container mx-auto px-4 py-8 space-y-8 max-w-7xl">
+          {/* Top Row: Parameter Controls - Full Width */}
+          <div className="w-full">
+            <ParameterControls 
+              params={params}
+              setParams={setParams}
+              mixing={mixing}
+              setMixing={setMixing}
+            />
+          </div>
 
-          {/* Encryption Panel */}
-          <EncryptionPanel 
-            seed={seed}
-            setSeed={setSeed}
-            params={params}
-            mixing={mixing}
-            setIsEncrypting={setIsEncrypting}
-          />
+          {/* Middle Row: Left-Right Layout - Encryption Panel and Metrics Dashboard */}
+          <div className="grid grid-cols-1 xl:grid-cols-2 gap-6 w-full">
+            {/* Left Column: Encryption Panel */}
+            <div className="xl:sticky xl:top-24 xl:self-start xl:h-fit">
+              <EncryptionPanel 
+                seed={seed}
+                setSeed={setSeed}
+                params={params}
+                mixing={mixing}
+                setIsEncrypting={setIsEncrypting}
+              />
+            </div>
 
-          {/* Metrics Dashboard */}
-          <MetricsDashboard 
-            seed={seed}
-            params={params}
-            mixing={mixing}
-          />
+            {/* Right Column: Metrics Dashboard */}
+            <div className="w-full">
+              <MetricsDashboard 
+                seed={seed}
+                params={params}
+                mixing={mixing}
+              />
+            </div>
+          </div>
 
-          {/* Large Attractor Visualization */}
-          <div className="glass-card p-6">
-            <h2 className="section-title flex items-center gap-3">
+          {/* Bottom Row: Full Width - Attractor Visualization */}
+          <div className="w-full glass-card p-8 card-hover">
+            <h2 className="section-title flex items-center gap-3 mb-6">
               <span className="text-4xl animate-bounce-slow">🌀</span>
               <span>Lorenz Attractor Visualization</span>
               <span className="text-2xl animate-sparkle">✨</span>
             </h2>
-            <p className="text-teal-dark text-sm mb-4 flex items-center gap-2">
+            <p className="text-text-secondary text-sm mb-6 flex items-center gap-2">
               <span>👆</span>
               <span>Watch the beautiful chaos unfold in real-time! Adjust parameters to see the magic happen! 🎨</span>
             </p>
-            <div className="h-96 rounded-xl overflow-hidden border-2 border-teal-dark/30">
+            <div className="h-96 rounded-2xl overflow-hidden border-2 border-primary/20 bg-white shadow-soft pointer-events-auto relative z-10">
               <AttractorVisualization 
                 params={params} 
                 mixing={mixing}

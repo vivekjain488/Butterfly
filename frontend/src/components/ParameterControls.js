@@ -17,10 +17,10 @@ function ParameterControls({ params, setParams, mixing, setMixing }) {
   };
 
   const SliderControl = ({ label, value, onChange, min, max, step, description }) => (
-    <div className="mb-4">
-      <div className="flex justify-between mb-1">
-        <label className="text-sm text-teal-neon">{label}</label>
-        <span className="text-sm text-teal-dark font-mono">{value.toFixed(4)}</span>
+    <div className="mb-5">
+      <div className="flex justify-between items-center mb-2">
+        <label className="text-sm text-text-primary font-semibold">{label}</label>
+        <span className="text-sm text-primary font-mono font-bold bg-primary/10 px-3 py-1 rounded-lg">{value.toFixed(4)}</span>
       </div>
       <input
         type="range"
@@ -29,34 +29,48 @@ function ParameterControls({ params, setParams, mixing, setMixing }) {
         step={step}
         value={value}
         onChange={(e) => onChange(parseFloat(e.target.value))}
-        className="w-full h-2 bg-cyber-dark rounded-lg appearance-none cursor-pointer slider"
+        className="w-full h-2 bg-border-light rounded-lg appearance-none cursor-pointer slider"
       />
       {description && (
-        <p className="text-xs text-teal-dark/60 mt-1">{description}</p>
+        <p className="text-xs text-text-muted mt-2">{description}</p>
       )}
     </div>
   );
 
   return (
-    <div className="glass-card p-6">
-      <div className="flex justify-between items-center mb-4">
-        <h2 className="text-2xl font-heading text-teal-neon neon-text flex items-center gap-2">
+    <div className="glass-card p-8 card-hover">
+      <div className="flex justify-between items-center mb-6">
+        <h2 className="text-2xl font-heading text-text-primary flex items-center gap-3 section-title">
           <span className="text-3xl animate-wiggle">⚙️</span>
           <span>Parameter Controls</span>
           <span className="text-xl animate-sparkle">✨</span>
         </h2>
-        <div className="flex gap-2">
+        <div className="flex gap-3">
           <button
-            onClick={resetToDefaults}
-            className="btn-secondary text-sm flex items-center gap-1"
+            type="button"
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              resetToDefaults();
+            }}
+            onMouseDown={(e) => e.stopPropagation()}
+            className="btn-secondary text-sm flex items-center gap-2"
             title="Reset all parameters to safe defaults"
+            style={{pointerEvents: 'auto', cursor: 'pointer', zIndex: 100}}
           >
             <span>🔄</span>
             <span>Reset Defaults</span>
           </button>
           <button
-            onClick={() => setIsExpanded(!isExpanded)}
-            className="btn-secondary text-sm flex items-center gap-1"
+            type="button"
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              setIsExpanded(!isExpanded);
+            }}
+            onMouseDown={(e) => e.stopPropagation()}
+            className="btn-secondary text-sm flex items-center gap-2"
+            style={{pointerEvents: 'auto', cursor: 'pointer', zIndex: 100}}
           >
             {isExpanded ? (
               <>
@@ -76,8 +90,11 @@ function ParameterControls({ params, setParams, mixing, setMixing }) {
       {isExpanded && (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
           {/* Logistic Map */}
-          <div className="p-4 border border-teal-dark/30 rounded-lg">
-            <h3 className="text-teal-neon font-bold mb-3">Logistic Map</h3>
+          <div className="p-5 border-2 border-primary/20 rounded-2xl bg-white glass-card">
+            <h3 className="text-primary font-bold mb-4 text-lg flex items-center gap-2">
+              <span>📈</span>
+              <span>Logistic Map</span>
+            </h3>
             <SliderControl
               label="r (control parameter)"
               value={params.logistic_r}
@@ -90,8 +107,11 @@ function ParameterControls({ params, setParams, mixing, setMixing }) {
           </div>
 
           {/* Henon Map */}
-          <div className="p-4 border border-teal-dark/30 rounded-lg">
-            <h3 className="text-teal-neon font-bold mb-3">Henon Map</h3>
+          <div className="p-5 border-2 border-accent/20 rounded-2xl bg-white glass-card">
+            <h3 className="text-accent font-bold mb-4 text-lg flex items-center gap-2">
+              <span>🌀</span>
+              <span>Henon Map</span>
+            </h3>
             <SliderControl
               label="a (nonlinearity)"
               value={params.henon_a}
@@ -111,8 +131,11 @@ function ParameterControls({ params, setParams, mixing, setMixing }) {
           </div>
 
           {/* Lorenz System */}
-          <div className="p-4 border border-teal-dark/30 rounded-lg md:col-span-2">
-            <h3 className="text-teal-neon font-bold mb-3">Lorenz System</h3>
+          <div className="p-5 border-2 border-secondary/20 rounded-2xl bg-white glass-card md:col-span-2">
+            <h3 className="text-secondary font-bold mb-4 text-lg flex items-center gap-2">
+              <span>🌊</span>
+              <span>Lorenz System</span>
+            </h3>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <SliderControl
                 label="σ (sigma)"
@@ -142,8 +165,11 @@ function ParameterControls({ params, setParams, mixing, setMixing }) {
           </div>
 
           {/* Sine Map */}
-          <div className="p-4 border border-teal-dark/30 rounded-lg">
-            <h3 className="text-teal-neon font-bold mb-3">Sine Map</h3>
+          <div className="p-5 border-2 border-yellow-pastel/30 rounded-2xl bg-white glass-card">
+            <h3 className="text-yellow-pastel font-bold mb-4 text-lg flex items-center gap-2" style={{color: '#FFA07A'}}>
+              <span>🌙</span>
+              <span>Sine Map</span>
+            </h3>
             <SliderControl
               label="μ (mu)"
               value={params.sine_mu}
@@ -156,10 +182,13 @@ function ParameterControls({ params, setParams, mixing, setMixing }) {
           </div>
 
           {/* Mixing Coefficients */}
-          <div className="p-4 border border-teal-dark/30 rounded-lg">
-            <h3 className="text-teal-neon font-bold mb-3">Mixing Coefficients</h3>
-            <p className="text-xs text-teal-dark mb-3">
-              α + β + γ + δ should = 1.0 (auto-normalized)
+          <div className="p-5 border-2 border-purple-pastel/30 rounded-2xl bg-white glass-card">
+            <h3 className="text-purple-pastel font-bold mb-4 text-lg flex items-center gap-2">
+              <span>🎨</span>
+              <span>Mixing Coefficients</span>
+            </h3>
+            <p className="text-xs text-text-muted mb-4 p-3 bg-purple-pastel/5 rounded-xl">
+              α + β + γ + δ should = 1.0 (auto-normalized) ⚖️
             </p>
             <SliderControl
               label="α (Logistic weight)"
@@ -214,10 +243,10 @@ function ParameterControls({ params, setParams, mixing, setMixing }) {
       )}
 
       {!isExpanded && (
-        <div className="text-center text-teal-dark text-sm mt-4 p-4 glass-card rounded-xl">
-          <p className="flex items-center justify-center gap-2">
-            <span className="text-2xl animate-bounce-slow">🎛️</span>
-            <span>Click "Expand" to adjust chaotic map parameters and watch the magic! ✨</span>
+        <div className="text-center text-text-secondary text-sm mt-6 p-6 glass-card rounded-2xl bg-white border-2 border-primary/10">
+          <p className="flex items-center justify-center gap-3">
+            <span className="text-3xl animate-bounce-slow">🎛️</span>
+            <span className="text-base font-medium">Click "Expand" to adjust chaotic map parameters and watch the magic! ✨</span>
           </p>
         </div>
       )}

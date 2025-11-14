@@ -12,8 +12,10 @@ function AttractorVisualization({ params, mixing, isAnimating, showControls = fa
     const mount = mountRef.current;
     if (!mount) return;
 
-    // Scene setup
+    // Scene setup - light theme
     const scene = new THREE.Scene();
+    scene.background = new THREE.Color(0xFEFBF7); // Light background
+    
     const camera = new THREE.PerspectiveCamera(
       75,
       mountRef.current.clientWidth / mountRef.current.clientHeight,
@@ -27,8 +29,16 @@ function AttractorVisualization({ params, mixing, isAnimating, showControls = fa
       alpha: true 
     });
     renderer.setSize(mount.clientWidth, mount.clientHeight);
-    renderer.setClearColor(0x000000, 0);
+    renderer.setClearColor(0xFEFBF7, 1);
     mount.appendChild(renderer.domElement);
+
+    // Add subtle lighting
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
+    scene.add(ambientLight);
+    
+    const pointLight = new THREE.PointLight(0x7DD3C0, 0.8, 100);
+    pointLight.position.set(25, 25, 25);
+    scene.add(pointLight);
 
     sceneRef.current = scene;
     rendererRef.current = renderer;
@@ -54,7 +64,7 @@ function AttractorVisualization({ params, mixing, isAnimating, showControls = fa
       return points;
     };
 
-    // Create particle system
+    // Create particle system with pastel colors
     const points = generateLorenzAttractor(
       params.lorenz_sigma,
       params.lorenz_rho,
@@ -63,18 +73,19 @@ function AttractorVisualization({ params, mixing, isAnimating, showControls = fa
 
     const geometry = new THREE.BufferGeometry().setFromPoints(points);
     
-    // Create gradient colors based on position
+    // Create gradient colors based on position - pastel theme
     const colors = new Float32Array(points.length * 3);
     points.forEach((point, i) => {
       const t = i / points.length;
-      colors[i * 3] = 0; // R
-      colors[i * 3 + 1] = t; // G (teal gradient)
-      colors[i * 3 + 2] = 1 - t; // B
+      // Pastel color gradient: mint -> lavender -> pink
+      colors[i * 3] = 0.49 + t * 0.51;     // R: 125-255 -> mint to pink
+      colors[i * 3 + 1] = 0.83 - t * 0.15; // G: 211-168 -> mint to lavender
+      colors[i * 3 + 2] = 0.75 + t * 0.25; // B: 192-255 -> mint to pink
     });
     geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
 
     const material = new THREE.PointsMaterial({
-      size: 0.3,
+      size: 0.4,
       vertexColors: true,
       transparent: true,
       opacity: 0.8,
@@ -85,11 +96,11 @@ function AttractorVisualization({ params, mixing, isAnimating, showControls = fa
     scene.add(particles);
     particlesRef.current = particles;
 
-    // Add trajectory line
+    // Add trajectory line with pastel color
     const lineMaterial = new THREE.LineBasicMaterial({
-      color: 0x00FFE1,
+      color: 0x7DD3C0, // Pastel mint
       transparent: true,
-      opacity: 0.3
+      opacity: 0.4
     });
     const line = new THREE.Line(geometry, lineMaterial);
     scene.add(line);
@@ -140,34 +151,34 @@ function AttractorVisualization({ params, mixing, isAnimating, showControls = fa
   }, [params, isAnimating]);
 
   return (
-    <div className="relative w-full h-full">
-      <div ref={mountRef} className="w-full h-full" />
+    <div className="relative w-full h-full pointer-events-auto">
+      <div ref={mountRef} className="w-full h-full pointer-events-auto" />
       
       {showControls && (
-        <div className="absolute top-4 right-4 glass-card p-4 text-xs rounded-xl border-2 border-teal-dark/30">
-          <p className="text-teal-neon font-bold mb-3 flex items-center gap-2">
+        <div className="absolute top-4 right-4 glass-card p-4 text-xs rounded-2xl border-2 border-primary/20 bg-white/95 backdrop-blur-sm">
+          <p className="text-primary font-bold mb-3 flex items-center gap-2">
             <span className="animate-wiggle">📐</span>
             <span>Lorenz Parameters</span>
           </p>
-          <div className="space-y-1">
-            <p className="text-teal-dark flex items-center gap-1">
-              <span className="text-teal-neon">σ</span>
+          <div className="space-y-2">
+            <p className="text-text-secondary flex items-center gap-2">
+              <span className="text-primary font-bold">σ</span>
               <span>=</span>
-              <span className="font-bold text-teal-neon">{params.lorenz_sigma.toFixed(2)}</span>
+              <span className="font-bold text-primary">{params.lorenz_sigma.toFixed(2)}</span>
             </p>
-            <p className="text-teal-dark flex items-center gap-1">
-              <span className="text-teal-neon">ρ</span>
+            <p className="text-text-secondary flex items-center gap-2">
+              <span className="text-primary font-bold">ρ</span>
               <span>=</span>
-              <span className="font-bold text-teal-neon">{params.lorenz_rho.toFixed(2)}</span>
+              <span className="font-bold text-primary">{params.lorenz_rho.toFixed(2)}</span>
             </p>
-            <p className="text-teal-dark flex items-center gap-1">
-              <span className="text-teal-neon">β</span>
+            <p className="text-text-secondary flex items-center gap-2">
+              <span className="text-primary font-bold">β</span>
               <span>=</span>
-              <span className="font-bold text-teal-neon">{params.lorenz_beta.toFixed(2)}</span>
+              <span className="font-bold text-primary">{params.lorenz_beta.toFixed(2)}</span>
             </p>
           </div>
           {isAnimating && (
-            <p className="text-teal-neon mt-3 flex items-center gap-2 animate-pulse-glow font-semibold">
+            <p className="text-primary mt-3 flex items-center gap-2 animate-pulse-soft font-semibold pt-3 border-t border-primary/20">
               <span className="animate-spin">🔄</span>
               <span>Encrypting...</span>
             </p>

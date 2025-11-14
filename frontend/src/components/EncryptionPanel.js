@@ -72,8 +72,8 @@ function EncryptionPanel({ seed, setSeed, params, mixing, setIsEncrypting }) {
   };
 
   return (
-    <div className="glass-card p-6">
-      <h2 className="section-title flex items-center gap-3">
+    <div className="glass-card p-8 card-hover">
+      <h2 className="section-title flex items-center gap-3 mb-8">
         <span className="text-4xl animate-bounce-slow">🔐</span>
         <span>Encryption Console</span>
         <span className="text-2xl animate-sparkle">✨</span>
@@ -81,54 +81,79 @@ function EncryptionPanel({ seed, setSeed, params, mixing, setIsEncrypting }) {
 
       {/* Seed Input */}
       <div className="mb-6">
-        <label className="block text-teal-neon mb-2 font-semibold text-lg flex items-center gap-2">
+        <label className="block text-text-primary mb-2 font-semibold text-lg flex items-center gap-2">
           <span className="animate-wiggle">🔑</span>
           Secret Seed / Password
         </label>
-        <div className="flex gap-2">
+        <div className="flex gap-3">
           <input
             type="text"
             value={seed}
             onChange={(e) => setSeed(e.target.value)}
+            onFocus={(e) => e.target.focus()}
+            onKeyDown={(e) => e.stopPropagation()}
             placeholder="Enter your secret seed... 🎯"
             className="input-cyber flex-1"
+            style={{pointerEvents: 'auto', cursor: 'text', zIndex: 100}}
+            autoComplete="off"
           />
           <button
-            onClick={generateRandomSeed}
+            type="button"
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              generateRandomSeed();
+            }}
+            onMouseDown={(e) => e.stopPropagation()}
             className="btn-secondary flex items-center gap-2"
             title="Generate a random seed!"
+            style={{pointerEvents: 'auto', cursor: 'pointer', zIndex: 100}}
           >
             <span>🎲</span>
-            Random
+            <span>Random</span>
           </button>
         </div>
-        <p className="text-xs text-teal-dark mt-2 flex items-center gap-1">
-          <span className="text-yellow-400">⚠️</span>
-          Tiny seed changes produce completely different ciphertext (avalanche effect) 🌊
+        <p className="text-xs text-text-muted mt-2 flex items-center gap-2">
+          <span className="text-yellow-pastel text-base">⚠️</span>
+          <span>Tiny seed changes produce completely different ciphertext (avalanche effect) 🌊</span>
         </p>
       </div>
 
       {/* Mode Tabs */}
       <div className="flex gap-3 mb-6">
         <button
-          onClick={() => setMode('encrypt')}
-          className={`px-5 py-3 rounded-xl font-semibold transition-all flex items-center gap-2 flex-1 ${
+          type="button"
+          onClick={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            setMode('encrypt');
+          }}
+          onMouseDown={(e) => e.stopPropagation()}
+          className={`px-6 py-3 rounded-2xl font-semibold transition-all flex items-center gap-2 flex-1 ${
             mode === 'encrypt'
-              ? 'bg-teal-neon text-cyber-bg scale-105 animate-pulse-glow shadow-neon-strong'
-              : 'bg-transparent border-2 border-teal-dark text-teal-dark hover:border-teal-neon hover:scale-105'
+              ? 'bg-gradient-to-r from-primary to-primary-light text-white scale-105 animate-pulse-soft shadow-colored-hover'
+              : 'bg-white border-2 border-border-light text-text-secondary hover:border-primary hover:scale-105'
           }`}
+          style={{pointerEvents: 'auto', cursor: 'pointer', zIndex: 100}}
         >
           {mode === 'encrypt' && <span className="animate-sparkle">✨</span>}
           <span>🔐</span>
           <span>Encrypt</span>
         </button>
         <button
-          onClick={() => setMode('decrypt')}
-          className={`px-5 py-3 rounded-xl font-semibold transition-all flex items-center gap-2 flex-1 ${
+          type="button"
+          onClick={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            setMode('decrypt');
+          }}
+          onMouseDown={(e) => e.stopPropagation()}
+          className={`px-6 py-3 rounded-2xl font-semibold transition-all flex items-center gap-2 flex-1 ${
             mode === 'decrypt'
-              ? 'bg-teal-neon text-cyber-bg scale-105 animate-pulse-glow shadow-neon-strong'
-              : 'bg-transparent border-2 border-teal-dark text-teal-dark hover:border-teal-neon hover:scale-105'
+              ? 'bg-gradient-to-r from-primary to-primary-light text-white scale-105 animate-pulse-soft shadow-colored-hover'
+              : 'bg-white border-2 border-border-light text-text-secondary hover:border-primary hover:scale-105'
           }`}
+          style={{pointerEvents: 'auto', cursor: 'pointer', zIndex: 100}}
         >
           {mode === 'decrypt' && <span className="animate-sparkle">✨</span>}
           <span>🔓</span>
@@ -138,24 +163,35 @@ function EncryptionPanel({ seed, setSeed, params, mixing, setIsEncrypting }) {
 
       {/* Encrypt Mode */}
       {mode === 'encrypt' && (
-        <div className="space-y-4">
+        <div className="space-y-5">
           <div>
-            <label className="block text-teal-neon mb-2 font-semibold">
-              📝 Plaintext
+            <label className="block text-text-primary mb-2 font-semibold flex items-center gap-2">
+              <span>📝</span>
+              <span>Plaintext</span>
             </label>
             <textarea
               value={plaintext}
               onChange={(e) => setPlaintext(e.target.value)}
-              placeholder="Enter message to encrypt..."
-              rows="4"
+              onFocus={(e) => e.target.focus()}
+              onKeyDown={(e) => e.stopPropagation()}
+              placeholder="Enter message to encrypt... ✨"
+              rows="5"
               className="input-cyber w-full resize-none"
+              style={{pointerEvents: 'auto', cursor: 'text', zIndex: 100}}
             />
           </div>
 
           <button
-            onClick={handleEncrypt}
+            type="button"
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              handleEncrypt();
+            }}
+            onMouseDown={(e) => e.stopPropagation()}
             disabled={loading || !plaintext || !seed}
             className="btn-primary w-full disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+            style={{pointerEvents: 'auto', cursor: loading || !plaintext || !seed ? 'not-allowed' : 'pointer', zIndex: 100}}
           >
             {loading ? (
               <>
@@ -172,29 +208,29 @@ function EncryptionPanel({ seed, setSeed, params, mixing, setIsEncrypting }) {
           </button>
 
           {ciphertext && (
-            <div className="animate-pulse-glow">
-              <label className="block text-teal-neon mb-2 font-semibold flex items-center gap-2">
+            <div className="animate-pulse-soft p-4 bg-primary/5 rounded-2xl border-2 border-primary/20">
+              <label className="block text-text-primary mb-2 font-semibold flex items-center gap-2">
                 <span className="animate-sparkle">🔒</span>
-                Ciphertext (Base64)
-                <span className="text-green-400 animate-bounce-slow">✓</span>
+                <span>Ciphertext (Base64)</span>
+                <span className="text-green-pastel animate-bounce-slow">✓</span>
               </label>
               <textarea
                 value={ciphertext}
                 readOnly
-                rows="4"
-                className="input-cyber w-full resize-none font-mono text-xs bg-teal-neon/5"
+                rows="5"
+                className="input-cyber w-full resize-none font-mono text-xs bg-white"
               />
-              <div className="flex items-center justify-between mt-2">
-                <p className="text-xs text-teal-dark flex items-center gap-1">
-                  <span className="text-green-400">✅</span>
-                  Length: <span className="font-bold text-teal-neon">{ciphertext.length}</span> characters
+              <div className="flex items-center justify-between mt-3">
+                <p className="text-xs text-text-secondary flex items-center gap-2">
+                  <span className="text-green-pastel">✅</span>
+                  <span>Length: <span className="font-bold text-primary">{ciphertext.length}</span> characters</span>
                 </p>
                 <button
                   onClick={() => {
                     navigator.clipboard.writeText(ciphertext);
                     alert('Ciphertext copied! 📋');
                   }}
-                  className="text-xs btn-secondary py-1 px-2 text-xs"
+                  className="text-xs btn-secondary py-2 px-4 text-xs"
                 >
                   📋 Copy
                 </button>
@@ -206,24 +242,35 @@ function EncryptionPanel({ seed, setSeed, params, mixing, setIsEncrypting }) {
 
       {/* Decrypt Mode */}
       {mode === 'decrypt' && (
-        <div className="space-y-4">
+        <div className="space-y-5">
           <div>
-            <label className="block text-teal-neon mb-2 font-semibold">
-              🔒 Ciphertext (Base64)
+            <label className="block text-text-primary mb-2 font-semibold flex items-center gap-2">
+              <span>🔒</span>
+              <span>Ciphertext (Base64)</span>
             </label>
-            <textarea
-              value={ciphertext}
-              onChange={(e) => setCiphertext(e.target.value)}
-              placeholder="Paste ciphertext here..."
-              rows="4"
-              className="input-cyber w-full resize-none font-mono text-xs"
-            />
+              <textarea
+                value={ciphertext}
+                onChange={(e) => setCiphertext(e.target.value)}
+                onFocus={(e) => e.target.focus()}
+                onKeyDown={(e) => e.stopPropagation()}
+                placeholder="Paste ciphertext here... ✨"
+                rows="5"
+                className="input-cyber w-full resize-none font-mono text-xs"
+                style={{pointerEvents: 'auto', cursor: 'text', zIndex: 100}}
+              />
           </div>
 
           <button
-            onClick={handleDecrypt}
+            type="button"
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              handleDecrypt();
+            }}
+            onMouseDown={(e) => e.stopPropagation()}
             disabled={loading || !ciphertext || !seed}
             className="btn-primary w-full disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+            style={{pointerEvents: 'auto', cursor: loading || !ciphertext || !seed ? 'not-allowed' : 'pointer', zIndex: 100}}
           >
             {loading ? (
               <>
@@ -240,17 +287,17 @@ function EncryptionPanel({ seed, setSeed, params, mixing, setIsEncrypting }) {
           </button>
 
           {decrypted && (
-            <div className="animate-pulse-glow">
-              <label className="block text-teal-neon mb-2 font-semibold flex items-center gap-2">
-                <span className="text-green-400 animate-bounce-slow">✅</span>
-                Decrypted Message
-                <span className="text-green-400 animate-sparkle">🎉</span>
+            <div className="animate-pulse-soft p-4 bg-green-pastel/10 rounded-2xl border-2 border-green-pastel/30">
+              <label className="block text-text-primary mb-2 font-semibold flex items-center gap-2">
+                <span className="text-green-pastel animate-bounce-slow">✅</span>
+                <span>Decrypted Message</span>
+                <span className="text-green-pastel animate-sparkle">🎉</span>
               </label>
               <textarea
                 value={decrypted}
                 readOnly
-                rows="4"
-                className="input-cyber w-full resize-none bg-green-400/10 border-green-400/30"
+                rows="5"
+                className="input-cyber w-full resize-none bg-white border-green-pastel/30"
               />
             </div>
           )}
@@ -259,8 +306,8 @@ function EncryptionPanel({ seed, setSeed, params, mixing, setIsEncrypting }) {
 
       {/* Error Display */}
       {error && (
-        <div className="mt-4 p-4 border-2 border-red-500 rounded-xl bg-red-500/20 animate-wiggle">
-          <p className="text-red-400 text-sm flex items-center gap-2 font-semibold">
+        <div className="mt-5 p-4 border-2 border-red-400 rounded-2xl bg-red-50 animate-wiggle">
+          <p className="text-red-600 text-sm flex items-center gap-2 font-semibold">
             <span className="text-2xl">❌</span>
             <span>{error}</span>
           </p>
@@ -268,27 +315,27 @@ function EncryptionPanel({ seed, setSeed, params, mixing, setIsEncrypting }) {
       )}
 
       {/* Info Box */}
-      <div className="mt-6 p-5 border-2 border-teal-dark/30 rounded-xl bg-gradient-to-br from-teal-dark/10 to-accent/10 glass-card">
-        <h4 className="text-teal-neon font-bold mb-3 text-lg flex items-center gap-2">
+      <div className="mt-6 p-6 border-2 border-primary/20 rounded-2xl bg-gradient-to-br from-primary/5 via-accent/5 to-secondary/5 glass-card">
+        <h4 className="text-text-primary font-bold mb-3 text-lg flex items-center gap-2">
           <span className="animate-sparkle">🎓</span>
-          How it works:
+          <span>How it works:</span>
         </h4>
-        <ul className="text-sm text-teal-dark space-y-2">
-          <li className="flex items-start gap-2">
+        <ul className="text-sm text-text-secondary space-y-3">
+          <li className="flex items-start gap-3">
             <span className="text-xl">1️⃣</span>
-            <span><strong className="text-teal-neon">CKDF:</strong> Seed → Chaotic maps → HKDF-SHA256 → Key 🔑</span>
+            <span><strong className="text-primary">CKDF:</strong> Seed → Chaotic maps → HKDF-SHA256 → Key 🔑</span>
           </li>
-          <li className="flex items-start gap-2">
+          <li className="flex items-start gap-3">
             <span className="text-xl">2️⃣</span>
-            <span><strong className="text-teal-neon">Permutation:</strong> Henon map generates block permutation 🔄</span>
+            <span><strong className="text-primary">Permutation:</strong> Henon map generates block permutation 🔄</span>
           </li>
-          <li className="flex items-start gap-2">
+          <li className="flex items-start gap-3">
             <span className="text-xl">3️⃣</span>
-            <span><strong className="text-teal-neon">Diffusion:</strong> XOR with hybrid chaotic keystream 🌊</span>
+            <span><strong className="text-primary">Diffusion:</strong> XOR with hybrid chaotic keystream 🌊</span>
           </li>
-          <li className="flex items-start gap-2">
+          <li className="flex items-start gap-3">
             <span className="text-xl">4️⃣</span>
-            <span><strong className="text-teal-neon">Security:</strong> Lyapunov λ₁ &gt; 0 ensures avalanche effect ⚡</span>
+            <span><strong className="text-primary">Security:</strong> Lyapunov λ₁ &gt; 0 ensures avalanche effect ⚡</span>
           </li>
         </ul>
       </div>

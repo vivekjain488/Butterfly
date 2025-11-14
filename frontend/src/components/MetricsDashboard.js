@@ -94,26 +94,33 @@ function MetricsDashboard({ seed, params, mixing }) {
   }, [params]);
 
   return (
-    <div className="glass-card p-6">
-      <h2 className="section-title flex items-center gap-3">
+    <div className="glass-card p-8 card-hover">
+      <h2 className="section-title flex items-center gap-3 mb-8">
         <span className="text-4xl animate-bounce-slow">📊</span>
         <span>Metrics Dashboard</span>
         <span className="text-2xl animate-sparkle">✨</span>
       </h2>
 
       {/* Tabs */}
-      <div className="flex flex-wrap gap-2 mb-6">
+      <div className="flex flex-wrap gap-3 mb-8">
         {['entropy', 'lyapunov', 'avalanche', 'statistical'].map((tab) => (
           <button
             key={tab}
-            onClick={() => setActiveTab(tab)}
-            className={`px-4 py-2 rounded-xl font-semibold capitalize transition-all flex items-center gap-2 ${
+            type="button"
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              setActiveTab(tab);
+            }}
+            onMouseDown={(e) => e.stopPropagation()}
+            className={`px-5 py-3 rounded-2xl font-semibold capitalize transition-all flex items-center gap-2 ${
               activeTab === tab
-                ? 'bg-teal-neon text-cyber-bg scale-105 animate-pulse-glow'
-                : 'bg-transparent border-2 border-teal-dark text-teal-dark hover:border-teal-neon hover:scale-105'
+                ? 'bg-gradient-to-r from-primary to-primary-light text-white scale-105 animate-pulse-soft shadow-colored-hover'
+                : 'bg-white border-2 border-border-light text-text-secondary hover:border-primary hover:scale-105'
             }`}
+            style={{pointerEvents: 'auto', cursor: 'pointer', zIndex: 100}}
           >
-            {activeTab === tab && <span>✨</span>}
+            {activeTab === tab && <span className="animate-sparkle">✨</span>}
             {tab}
           </button>
         ))}
@@ -122,15 +129,22 @@ function MetricsDashboard({ seed, params, mixing }) {
       {/* Entropy Tab */}
       {activeTab === 'entropy' && (
         <div>
-          <div className="flex justify-between items-center mb-4">
-            <h3 className="text-xl text-teal-neon font-bold flex items-center gap-2">
+          <div className="flex justify-between items-center mb-6">
+            <h3 className="text-xl text-text-primary font-bold flex items-center gap-2">
               <span className="animate-wiggle">🎲</span>
               Shannon Entropy Analysis
             </h3>
             <button
-              onClick={computeEntropy}
+              type="button"
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                computeEntropy();
+              }}
+              onMouseDown={(e) => e.stopPropagation()}
               disabled={loading.entropy || !seed}
               className="btn-secondary disabled:opacity-50 flex items-center gap-2"
+              style={{pointerEvents: 'auto', cursor: loading.entropy || !seed ? 'not-allowed' : 'pointer', zIndex: 100}}
             >
               {loading.entropy ? (
                 <>
@@ -147,57 +161,74 @@ function MetricsDashboard({ seed, params, mixing }) {
           </div>
 
           {metrics.entropy && (
-            <div className="space-y-4">
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <div className="p-4 border-2 border-teal-dark/30 rounded-xl text-center glass-card hover:scale-105 transition-transform">
-                  <p className="text-teal-dark text-sm mb-2 flex items-center justify-center gap-1">
+            <div className="space-y-6">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div className="p-6 border-2 border-primary/20 rounded-2xl text-center glass-card hover:scale-105 transition-transform bg-white">
+                  <p className="text-text-secondary text-sm mb-2 flex items-center justify-center gap-2">
                     <span>📈</span>
                     <span>Entropy</span>
                   </p>
-                  <p className="text-4xl font-bold text-teal-neon animate-pulse-glow">
+                  <p className="text-5xl font-bold text-primary animate-pulse-soft">
                     {metrics.entropy.entropy.toFixed(4)}
                   </p>
-                  <p className="text-xs text-teal-dark mt-2">bits/byte</p>
+                  <p className="text-xs text-text-muted mt-2">bits/byte</p>
                 </div>
                 
-                <div className="p-4 border-2 border-teal-dark/30 rounded-xl text-center glass-card hover:scale-105 transition-transform">
-                  <p className="text-teal-dark text-sm mb-2 flex items-center justify-center gap-1">
+                <div className="p-6 border-2 border-accent/20 rounded-2xl text-center glass-card hover:scale-105 transition-transform bg-white">
+                  <p className="text-text-secondary text-sm mb-2 flex items-center justify-center gap-2">
                     <span>🎯</span>
                     <span>Target</span>
                   </p>
-                  <p className="text-4xl font-bold text-teal-dark">
+                  <p className="text-5xl font-bold text-accent">
                     {metrics.entropy.target.toFixed(2)}
                   </p>
-                  <p className="text-xs text-teal-dark mt-2">Perfect randomness ✨</p>
+                  <p className="text-xs text-text-muted mt-2">Perfect randomness ✨</p>
                 </div>
 
-                <div className="p-4 border-2 border-teal-dark/30 rounded-xl text-center glass-card hover:scale-105 transition-transform">
-                  <p className="text-teal-dark text-sm mb-2 flex items-center justify-center gap-1">
+                <div className="p-6 border-2 border-secondary/20 rounded-2xl text-center glass-card hover:scale-105 transition-transform bg-white">
+                  <p className="text-text-secondary text-sm mb-2 flex items-center justify-center gap-2">
                     <span>⭐</span>
                     <span>Quality</span>
                   </p>
-                  <p className={`text-4xl font-bold animate-bounce-slow ${
-                    metrics.entropy.quality === 'Excellent' ? 'text-green-400' :
-                    metrics.entropy.quality === 'Good' ? 'text-yellow-400' : 'text-red-400'
+                  <p className={`text-5xl font-bold animate-bounce-slow ${
+                    metrics.entropy.quality === 'Excellent' ? 'text-green-pastel' :
+                    metrics.entropy.quality === 'Good' ? 'text-yellow-pastel' : 'text-secondary'
                   }`}>
                     {metrics.entropy.quality === 'Excellent' && '🌟'}
                     {metrics.entropy.quality === 'Good' && '👍'}
                     {metrics.entropy.quality === 'Poor' && '⚠️'}
                   </p>
-                  <p className="text-xs text-teal-dark mt-2">{metrics.entropy.quality}</p>
+                  <p className="text-xs text-text-muted mt-2">{metrics.entropy.quality}</p>
                 </div>
               </div>
 
               {metrics.entropy.block_entropies && (
-                <div className="mt-6">
-                  <h4 className="text-teal-neon font-semibold mb-3">Block-wise Entropy (first 20 blocks)</h4>
-                  <ResponsiveContainer width="100%" height={200}>
+                <div className="mt-8 p-6 bg-white rounded-2xl border-2 border-primary/10">
+                  <h4 className="text-text-primary font-semibold mb-4 flex items-center gap-2">
+                    <span>📉</span>
+                    <span>Block-wise Entropy (first 20 blocks)</span>
+                  </h4>
+                  <ResponsiveContainer width="100%" height={250}>
                     <LineChart data={metrics.entropy.block_entropies.map((e, i) => ({ block: i + 1, entropy: e }))}>
-                      <CartesianGrid strokeDasharray="3 3" stroke="#00ADB5" opacity={0.2} />
-                      <XAxis dataKey="block" stroke="#00FFE1" />
-                      <YAxis domain={[7.5, 8.0]} stroke="#00FFE1" />
-                      <Tooltip contentStyle={{ backgroundColor: '#000814', border: '1px solid #00ADB5' }} />
-                      <Line type="monotone" dataKey="entropy" stroke="#00FFE1" strokeWidth={2} dot={{ fill: '#00FFE1' }} />
+                      <CartesianGrid strokeDasharray="3 3" stroke="#E2E8F0" />
+                      <XAxis dataKey="block" stroke="#718096" />
+                      <YAxis domain={[7.5, 8.0]} stroke="#718096" />
+                      <Tooltip 
+                        contentStyle={{ 
+                          backgroundColor: '#FFFFFF', 
+                          border: '2px solid #7DD3C0',
+                          borderRadius: '12px',
+                          color: '#2D3748'
+                        }} 
+                      />
+                      <Line 
+                        type="monotone" 
+                        dataKey="entropy" 
+                        stroke="#7DD3C0" 
+                        strokeWidth={3} 
+                        dot={{ fill: '#A8E6CF', r: 5 }} 
+                        activeDot={{ r: 7, fill: '#7DD3C0' }}
+                      />
                     </LineChart>
                   </ResponsiveContainer>
                 </div>
@@ -210,37 +241,60 @@ function MetricsDashboard({ seed, params, mixing }) {
       {/* Lyapunov Tab */}
       {activeTab === 'lyapunov' && (
         <div>
-          <div className="flex justify-between items-center mb-4">
-            <h3 className="text-xl text-teal-neon font-bold">Lyapunov Exponent</h3>
+          <div className="flex justify-between items-center mb-6">
+            <h3 className="text-xl text-text-primary font-bold flex items-center gap-2">
+              <span>📐</span>
+              Lyapunov Exponent
+            </h3>
             <button
-              onClick={computeLyapunov}
+              type="button"
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                computeLyapunov();
+              }}
+              onMouseDown={(e) => e.stopPropagation()}
               disabled={loading.lyapunov}
-              className="btn-secondary disabled:opacity-50"
+              className="btn-secondary disabled:opacity-50 flex items-center gap-2"
+              style={{pointerEvents: 'auto', cursor: loading.lyapunov ? 'not-allowed' : 'pointer', zIndex: 100}}
             >
-              {loading.lyapunov ? '🔄 Computing...' : '▶️ Compute Lyapunov'}
+              {loading.lyapunov ? (
+                <>
+                  <span className="animate-spin">🔄</span>
+                  <span>Computing...</span>
+                </>
+              ) : (
+                <>
+                  <span>▶️</span>
+                  <span>Compute Lyapunov</span>
+                </>
+              )}
             </button>
           </div>
 
           {metrics.lyapunov && (
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {Object.entries(metrics.lyapunov).map(([mapName, data]) => (
-                <div key={mapName} className="p-4 border border-teal-dark/30 rounded-lg">
-                  <h4 className="text-teal-neon font-semibold mb-3 capitalize">{mapName} Map</h4>
-                  <div className="space-y-2">
-                    <div className="flex justify-between">
-                      <span className="text-teal-dark">λ₁:</span>
-                      <span className={`font-bold ${data.chaotic ? 'text-green-400' : 'text-red-400'}`}>
+                <div key={mapName} className="p-6 border-2 border-primary/20 rounded-2xl glass-card bg-white">
+                  <h4 className="text-primary font-semibold mb-4 capitalize text-lg flex items-center gap-2">
+                    <span>🌀</span>
+                    {mapName} Map
+                  </h4>
+                  <div className="space-y-3">
+                    <div className="flex justify-between items-center p-3 bg-primary/5 rounded-xl">
+                      <span className="text-text-secondary">λ₁:</span>
+                      <span className={`font-bold text-lg ${data.chaotic ? 'text-green-pastel' : 'text-secondary'}`}>
                         {data.lambda.toFixed(6)}
                       </span>
                     </div>
-                    <div className="flex justify-between">
-                      <span className="text-teal-dark">Chaotic:</span>
-                      <span className={`font-bold ${data.chaotic ? 'text-green-400' : 'text-red-400'}`}>
+                    <div className="flex justify-between items-center p-3 bg-primary/5 rounded-xl">
+                      <span className="text-text-secondary">Chaotic:</span>
+                      <span className={`font-bold ${data.chaotic ? 'text-green-pastel' : 'text-secondary'}`}>
                         {data.chaotic ? '✅ Yes' : '❌ No'}
                       </span>
                     </div>
-                    <p className="text-xs text-teal-dark mt-3">
-                      λ₁ &gt; 0 indicates exponential divergence (Butterfly)
+                    <p className="text-xs text-text-muted mt-4 p-3 bg-accent/5 rounded-xl">
+                      λ₁ &gt; 0 indicates exponential divergence (Butterfly) 🦋
                     </p>
                   </div>
                 </div>
@@ -253,56 +307,87 @@ function MetricsDashboard({ seed, params, mixing }) {
       {/* Avalanche Tab */}
       {activeTab === 'avalanche' && (
         <div>
-          <div className="flex justify-between items-center mb-4">
-            <h3 className="text-xl text-teal-neon font-bold">Avalanche Effect</h3>
+          <div className="flex justify-between items-center mb-6">
+            <h3 className="text-xl text-text-primary font-bold flex items-center gap-2">
+              <span>🌊</span>
+              Avalanche Effect
+            </h3>
             <button
-              onClick={computeAvalanche}
+              type="button"
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                computeAvalanche();
+              }}
+              onMouseDown={(e) => e.stopPropagation()}
               disabled={loading.avalanche || !seed}
-              className="btn-secondary disabled:opacity-50"
+              className="btn-secondary disabled:opacity-50 flex items-center gap-2"
+              style={{pointerEvents: 'auto', cursor: loading.avalanche || !seed ? 'not-allowed' : 'pointer', zIndex: 100}}
             >
-              {loading.avalanche ? '🔄 Testing...' : '▶️ Run Avalanche Test'}
+              {loading.avalanche ? (
+                <>
+                  <span className="animate-spin">🔄</span>
+                  <span>Testing...</span>
+                </>
+              ) : (
+                <>
+                  <span>▶️</span>
+                  <span>Run Avalanche Test</span>
+                </>
+              )}
             </button>
           </div>
 
           {metrics.avalanche && (
-            <div className="space-y-4">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div className="p-4 border border-teal-dark/30 rounded-lg text-center">
-                  <p className="text-teal-dark text-sm mb-1">Mean Flip %</p>
-                  <p className="text-3xl font-bold text-teal-neon">
+            <div className="space-y-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="p-6 border-2 border-primary/20 rounded-2xl text-center glass-card bg-white hover:scale-105 transition-transform">
+                  <p className="text-text-secondary text-sm mb-2 flex items-center justify-center gap-2">
+                    <span>📊</span>
+                    <span>Mean Flip %</span>
+                  </p>
+                  <p className="text-5xl font-bold text-primary animate-pulse-soft">
                     {metrics.avalanche.mean_flip_percentage.toFixed(2)}%
                   </p>
-                  <p className="text-xs text-teal-dark mt-1">
+                  <p className="text-xs text-text-muted mt-2">
                     ± {metrics.avalanche.std_flip_percentage.toFixed(2)}%
                   </p>
                 </div>
 
-                <div className="p-4 border border-teal-dark/30 rounded-lg text-center">
-                  <p className="text-teal-dark text-sm mb-1">Quality</p>
-                  <p className={`text-3xl font-bold ${
-                    metrics.avalanche.quality === 'Excellent' ? 'text-green-400' :
-                    metrics.avalanche.quality === 'Good' ? 'text-yellow-400' : 'text-red-400'
-                  }`}>
-                    {metrics.avalanche.quality}
+                <div className="p-6 border-2 border-accent/20 rounded-2xl text-center glass-card bg-white hover:scale-105 transition-transform">
+                  <p className="text-text-secondary text-sm mb-2 flex items-center justify-center gap-2">
+                    <span>⭐</span>
+                    <span>Quality</span>
                   </p>
-                  <p className="text-xs text-teal-dark mt-1">Target: ~50%</p>
+                  <p className={`text-5xl font-bold animate-bounce-slow ${
+                    metrics.avalanche.quality === 'Excellent' ? 'text-green-pastel' :
+                    metrics.avalanche.quality === 'Good' ? 'text-yellow-pastel' : 'text-secondary'
+                  }`}>
+                    {metrics.avalanche.quality === 'Excellent' && '🌟'}
+                    {metrics.avalanche.quality === 'Good' && '👍'}
+                    {metrics.avalanche.quality === 'Poor' && '⚠️'}
+                  </p>
+                  <p className="text-xs text-text-muted mt-2">Target: ~50%</p>
                 </div>
               </div>
 
-              <div className="p-4 border border-teal-dark/30 rounded-lg">
-                <h4 className="text-teal-neon font-semibold mb-2">Test Details</h4>
-                <div className="grid grid-cols-2 gap-2 text-sm">
-                  <div className="flex justify-between">
-                    <span className="text-teal-dark">Min flips:</span>
-                    <span className="text-teal-neon">{metrics.avalanche.min_flip}</span>
+              <div className="p-6 border-2 border-border-light rounded-2xl bg-white glass-card">
+                <h4 className="text-text-primary font-semibold mb-4 flex items-center gap-2">
+                  <span>📋</span>
+                  <span>Test Details</span>
+                </h4>
+                <div className="grid grid-cols-2 gap-4 text-sm">
+                  <div className="flex justify-between items-center p-3 bg-primary/5 rounded-xl">
+                    <span className="text-text-secondary">Min flips:</span>
+                    <span className="text-primary font-bold">{metrics.avalanche.min_flip}</span>
                   </div>
-                  <div className="flex justify-between">
-                    <span className="text-teal-dark">Max flips:</span>
-                    <span className="text-teal-neon">{metrics.avalanche.max_flip}</span>
+                  <div className="flex justify-between items-center p-3 bg-accent/5 rounded-xl">
+                    <span className="text-text-secondary">Max flips:</span>
+                    <span className="text-accent font-bold">{metrics.avalanche.max_flip}</span>
                   </div>
-                  <div className="flex justify-between col-span-2">
-                    <span className="text-teal-dark">Total bits:</span>
-                    <span className="text-teal-neon">{metrics.avalanche.total_bits}</span>
+                  <div className="flex justify-between items-center p-3 bg-secondary/5 rounded-xl col-span-2">
+                    <span className="text-text-secondary">Total bits:</span>
+                    <span className="text-secondary font-bold">{metrics.avalanche.total_bits}</span>
                   </div>
                 </div>
               </div>
@@ -314,51 +399,81 @@ function MetricsDashboard({ seed, params, mixing }) {
       {/* Statistical Tests Tab */}
       {activeTab === 'statistical' && (
         <div>
-          <div className="flex justify-between items-center mb-4">
-            <h3 className="text-xl text-teal-neon font-bold">Statistical Test Suite</h3>
+          <div className="flex justify-between items-center mb-6">
+            <h3 className="text-xl text-text-primary font-bold flex items-center gap-2">
+              <span>🧪</span>
+              Statistical Test Suite
+            </h3>
             <button
-              onClick={computeStatistical}
+              type="button"
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                computeStatistical();
+              }}
+              onMouseDown={(e) => e.stopPropagation()}
               disabled={loading.statistical || !seed}
-              className="btn-secondary disabled:opacity-50"
+              className="btn-secondary disabled:opacity-50 flex items-center gap-2"
+              style={{pointerEvents: 'auto', cursor: loading.statistical || !seed ? 'not-allowed' : 'pointer', zIndex: 100}}
             >
-              {loading.statistical ? '🔄 Testing...' : '▶️ Run Tests'}
+              {loading.statistical ? (
+                <>
+                  <span className="animate-spin">🔄</span>
+                  <span>Testing...</span>
+                </>
+              ) : (
+                <>
+                  <span>▶️</span>
+                  <span>Run Tests</span>
+                </>
+              )}
             </button>
           </div>
 
           {metrics.statistical && (
-            <div className="space-y-4">
+            <div className="space-y-6">
               {metrics.statistical.summary && (
-                <div className="p-4 border border-teal-dark/30 rounded-lg bg-teal-dark/5">
-                  <h4 className="text-teal-neon font-semibold mb-3">Summary</h4>
-                  <div className="grid grid-cols-3 gap-4 text-center">
-                    <div>
-                      <p className="text-2xl font-bold text-teal-neon">{metrics.statistical.summary.passed}</p>
-                      <p className="text-sm text-teal-dark">Passed</p>
+                <div className="p-6 border-2 border-primary/20 rounded-2xl bg-gradient-to-r from-primary/10 via-accent/10 to-secondary/10 glass-card">
+                  <h4 className="text-text-primary font-semibold mb-4 flex items-center gap-2">
+                    <span>📊</span>
+                    <span>Summary</span>
+                  </h4>
+                  <div className="grid grid-cols-3 gap-6 text-center">
+                    <div className="p-4 bg-white rounded-xl">
+                      <p className="text-4xl font-bold text-green-pastel">{metrics.statistical.summary.passed}</p>
+                      <p className="text-sm text-text-secondary mt-2">Passed ✅</p>
                     </div>
-                    <div>
-                      <p className="text-2xl font-bold text-red-400">{metrics.statistical.summary.failed}</p>
-                      <p className="text-sm text-teal-dark">Failed</p>
+                    <div className="p-4 bg-white rounded-xl">
+                      <p className="text-4xl font-bold text-secondary">{metrics.statistical.summary.failed}</p>
+                      <p className="text-sm text-text-secondary mt-2">Failed ❌</p>
                     </div>
-                    <div>
-                      <p className="text-2xl font-bold text-teal-neon">{metrics.statistical.summary.pass_rate.toFixed(1)}%</p>
-                      <p className="text-sm text-teal-dark">Pass Rate</p>
+                    <div className="p-4 bg-white rounded-xl">
+                      <p className="text-4xl font-bold text-primary">{metrics.statistical.summary.pass_rate.toFixed(1)}%</p>
+                      <p className="text-sm text-text-secondary mt-2">Pass Rate 📈</p>
                     </div>
                   </div>
                 </div>
               )}
 
-              <div className="space-y-2">
+              <div className="space-y-3">
                 {Object.entries(metrics.statistical)
                   .filter(([key]) => key !== 'summary')
                   .map(([testName, result]) => (
-                    <div key={testName} className="p-3 border border-teal-dark/30 rounded-lg">
+                    <div key={testName} className="p-4 border-2 border-border-light rounded-xl glass-card bg-white hover:scale-102 transition-transform">
                       <div className="flex justify-between items-center">
-                        <span className="font-semibold text-teal-neon">{result.test_name}</span>
-                        <span className={`font-bold ${result.passed ? 'text-green-400' : 'text-red-400'}`}>
-                          {result.passed ? '✅ PASS' : '❌ FAIL'}
+                        <span className="font-semibold text-text-primary flex items-center gap-2">
+                          <span>{result.passed ? '✅' : '❌'}</span>
+                          <span>{result.test_name}</span>
+                        </span>
+                        <span className={`font-bold px-3 py-1 rounded-lg ${
+                          result.passed 
+                            ? 'bg-green-pastel/20 text-green-pastel' 
+                            : 'bg-secondary/20 text-secondary'
+                        }`}>
+                          {result.passed ? 'PASS' : 'FAIL'}
                         </span>
                       </div>
-                      <p className="text-xs text-teal-dark mt-1">{result.description}</p>
+                      <p className="text-xs text-text-muted mt-2">{result.description}</p>
                     </div>
                   ))}
               </div>
