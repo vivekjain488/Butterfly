@@ -17,7 +17,7 @@ class LogisticMap:
     Parameters:
     -----------
     r : float
-        Control parameter, typically in [3.57, 4.0] for chaos
+        Control parameter, typically in [3.57, 4.0] for Butterfly
     x0 : float
         Initial condition, must be in (0, 1)
     """

@@ -2,7 +2,7 @@
 Lyapunov Exponent Calculation
 
 Measures sensitivity to initial conditions.
-Positive λ₁ indicates chaos.
+Positive λ₁ indicates Butterfly.
 """
 
 import numpy as np
@@ -161,7 +161,7 @@ def test_lyapunov():
     # Logistic map
     lambda_logistic = compute_lyapunov_logistic(r=3.99)
     print(f"✓ Logistic Map (r=3.99): λ₁ = {lambda_logistic:.4f}")
-    print(f"  Expected: λ₁ > 0 for chaos")
+    print(f"  Expected: λ₁ > 0 for Butterfly")
     
     # Henon map
     lambda_henon = compute_lyapunov_henon(a=1.4, b=0.3)

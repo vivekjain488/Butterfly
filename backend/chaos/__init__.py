@@ -1,5 +1,5 @@
 """
-Chaos Cryptography - Core Chaotic Maps Module
+Butterfly - Core Chaotic Maps Module
 
 Implements fundamental chaotic dynamical systems:
 - Logistic Map (1D discrete)

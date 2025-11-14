@@ -9,7 +9,8 @@ function AttractorVisualization({ params, mixing, isAnimating, showControls = fa
   const animationIdRef = useRef(null);
 
   useEffect(() => {
-    if (!mountRef.current) return;
+    const mount = mountRef.current;
+    if (!mount) return;
 
     // Scene setup
     const scene = new THREE.Scene();
@@ -25,9 +26,9 @@ function AttractorVisualization({ params, mixing, isAnimating, showControls = fa
       antialias: true, 
       alpha: true 
     });
-    renderer.setSize(mountRef.current.clientWidth, mountRef.current.clientHeight);
+    renderer.setSize(mount.clientWidth, mount.clientHeight);
     renderer.setClearColor(0x000000, 0);
-    mountRef.current.appendChild(renderer.domElement);
+    mount.appendChild(renderer.domElement);
 
     sceneRef.current = scene;
     rendererRef.current = renderer;
@@ -114,11 +115,11 @@ function AttractorVisualization({ params, mixing, isAnimating, showControls = fa
 
     // Handle window resize
     const handleResize = () => {
-      if (!mountRef.current) return;
+      if (!mount) return;
       
-      camera.aspect = mountRef.current.clientWidth / mountRef.current.clientHeight;
+      camera.aspect = mount.clientWidth / mount.clientHeight;
       camera.updateProjectionMatrix();
-      renderer.setSize(mountRef.current.clientWidth, mountRef.current.clientHeight);
+      renderer.setSize(mount.clientWidth, mount.clientHeight);
     };
     window.addEventListener('resize', handleResize);
 
@@ -128,8 +129,8 @@ function AttractorVisualization({ params, mixing, isAnimating, showControls = fa
       if (animationIdRef.current) {
         cancelAnimationFrame(animationIdRef.current);
       }
-      if (mountRef.current && renderer.domElement) {
-        mountRef.current.removeChild(renderer.domElement);
+      if (mount && renderer.domElement) {
+        try { mount.removeChild(renderer.domElement); } catch (e) { /* ignore */ }
       }
       geometry.dispose();
       material.dispose();

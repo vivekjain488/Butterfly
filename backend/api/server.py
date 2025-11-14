@@ -1,5 +1,5 @@
 """
-Flask REST API for Chaos Cryptography
+Flask REST API for Butterfly
 
 Endpoints:
 - POST /api/derive_key - Derive cryptographic key
@@ -23,8 +23,8 @@ import os
 sys.path.append(os.path.dirname(os.path.dirname(__file__)))
 
 from crypto.ckdf import ChaoticKDF
-from crypto.cipher import ChaosCipher
-from chaos import HybridChaoticMap
+from crypto.cipher import ButterflyCipher
+from chaos.hybrid_map import HybridChaoticMap
 from metrics.lyapunov import compute_lyapunov_logistic, compute_lyapunov_henon, compute_lyapunov_lorenz
 from metrics.entropy import shannon_entropy_bytes
 from metrics.avalanche import avalanche_test
@@ -52,7 +52,7 @@ def health_check():
     """Health check endpoint"""
     return jsonify({
         'status': 'healthy',
-        'service': 'Chaos Cryptography API',
+        'service': 'Butterfly API',
         'version': '0.1.0'
     })
 
@@ -142,7 +142,7 @@ def encrypt():
             plaintext = plaintext.encode('utf-8')
         
         # Encrypt
-        cipher = ChaosCipher(seed, params=params, mixing=tuple(mixing) if mixing else None)
+        cipher = ButterflyCipher(seed, params=params, mixing=tuple(mixing) if mixing else None)
         ciphertext = cipher.encrypt(plaintext)
         
         # Compute keystream hash for verification
@@ -194,7 +194,7 @@ def decrypt():
         ciphertext = base64.b64decode(ciphertext_b64)
         
         # Decrypt
-        cipher = ChaosCipher(seed, params=params, mixing=tuple(mixing) if mixing else None)
+        cipher = ButterflyCipher(seed, params=params, mixing=tuple(mixing) if mixing else None)
         plaintext = cipher.decrypt(ciphertext)
         
         # Return as text or binary
@@ -344,16 +344,20 @@ def compute_avalanche():
         data = request.get_json()
         
         seed = data.get('seed', 'test_seed')
-        plaintext = data.get('plaintext', 'Hello, world!')
+        plaintext = data.get('plaintext', 'Hello, Butterfly! This is a test message for avalanche effect analysis.')
         n_trials = data.get('n_trials', 50)
         
-        # Create encryption function
+        print(f"[AVALANCHE] Testing with seed={seed}, plaintext_len={len(plaintext)}, trials={n_trials}")
+        
+        # Create encryption function that uses different cipher instance each time
         def encrypt_func(pt):
-            c = ChaosCipher(seed)
+            c = ButterflyCipher(seed, params=data.get('params'))
             return c.encrypt(pt)
         
         from metrics.avalanche import avalanche_test
         results = avalanche_test(encrypt_func, plaintext.encode(), n_trials=n_trials)
+        
+        print(f"[AVALANCHE] Result: {results['mean_flip_percentage']:.2f}% ± {results['std_flip_percentage']:.2f}%")
         
         # Convert numpy types to Python types
         return jsonify({
@@ -471,8 +475,8 @@ def get_attractor_data():
 
 
 if __name__ == '__main__':
-    print("🦋 Starting Chaos Cryptography API Server...")
-    print("📊 Endpoints available:")
+    print("=== Starting Butterfly API Server ===")
+    print("Endpoints available:")
     print("  - POST /api/derive_key")
     print("  - POST /api/encrypt")
     print("  - POST /api/decrypt")
@@ -481,6 +485,6 @@ if __name__ == '__main__':
     print("  - POST /api/metrics/avalanche")
     print("  - POST /api/metrics/statistical")
     print("  - POST /api/attractor")
-    print("\n🚀 Server running on http://localhost:5000\n")
+    print("\n>>> Server running on http://localhost:5000 <<<\n")
     
     app.run(debug=True, host='0.0.0.0', port=5000)

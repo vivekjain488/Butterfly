@@ -17,14 +17,14 @@ class SineMap:
     Parameters:
     -----------
     mu : float
-        Control parameter (μ ≈ 1.0 for chaos)
+        Control parameter (μ ≈ 1.0 for Butterfly)
     x0 : float
         Initial condition in (0, 1)
     """
     
     def __init__(self, mu=0.99, x0=0.5):
         if not (0.8 <= mu <= 1.0):
-            print(f"Warning: mu={mu} may not be optimal for chaos [0.8, 1.0]")
+            print(f"Warning: mu={mu} may not be optimal for Butterfly [0.8, 1.0]")
         if not (0 < x0 < 1):
             raise ValueError("Initial condition x0 must be in (0, 1)")
         

@@ -1,5 +1,5 @@
 """
-Chaos Cipher - Encryption/Decryption Implementation
+Butterfly Cipher - Encryption/Decryption Implementation
 
 Implements stream-block hybrid cipher using chaotic keystream,
 permutation, and diffusion.
@@ -16,9 +16,9 @@ sys.path.append(os.path.dirname(os.path.dirname(__file__)))
 from crypto.ckdf import ChaoticKDF
 
 
-class ChaosCipher:
+class ButterflyCipher:
     """
-    Chaos-based encryption cipher.
+    Butterfly-based encryption cipher.
     
     Encryption pipeline:
     1. Split plaintext into blocks (128-bit)
@@ -169,13 +169,13 @@ class ChaosCipher:
 
 def test_cipher():
     """Test encryption/decryption"""
-    print("Testing Chaos Cipher...")
+    print("Testing Butterfly Cipher...")
     
     seed = "test_password_123"
-    cipher = ChaosCipher(seed)
+    cipher = ButterflyCipher(seed)
     
     # Test 1: Basic encryption/decryption
-    plaintext = "Hello, Chaos Cryptography! 🦋"
+    plaintext = "Hello, Butterfly! "
     ciphertext = cipher.encrypt(plaintext)
     decrypted = cipher.decrypt(ciphertext)
     
@@ -186,7 +186,7 @@ def test_cipher():
     print(f"  Decrypted:  {decrypted.decode('utf-8')}")
     
     # Test 2: Wrong key fails
-    cipher2 = ChaosCipher("wrong_password")
+    cipher2 = ButterflyCipher("wrong_password")
     try:
         wrong_decrypt = cipher2.decrypt(ciphertext)
         # Should get garbage, not original plaintext
@@ -196,7 +196,7 @@ def test_cipher():
         print("✓ Wrong key fails to decrypt")
     
     # Test 3: Avalanche effect
-    cipher3 = ChaosCipher("test_password_124")  # One char different
+    cipher3 = ButterflyCipher("test_password_124")  # One char different
     ciphertext2 = cipher3.encrypt(plaintext)
     
     # Calculate bit difference

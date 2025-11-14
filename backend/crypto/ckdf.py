@@ -8,13 +8,14 @@ Includes cryptographic post-processing via HKDF-SHA256.
 import hashlib
 import hmac
 import numpy as np
-from hkdf import hkdf_expand, hkdf_extract
+from cryptography.hazmat.primitives import hashes
+from cryptography.hazmat.primitives.kdf.hkdf import HKDF
 
 import sys
 import os
 sys.path.append(os.path.dirname(os.path.dirname(__file__)))
 
-from chaos import HybridChaoticMap
+from chaos.hybrid_map import HybridChaoticMap
 
 
 class ChaoticKDF:
@@ -25,7 +26,7 @@ class ChaoticKDF:
     1. Preprocess seed via HMAC-SHA512(seed, salt)
     2. Map to initial conditions for chaotic maps
     3. Burn-in iterations (default 4096)
-    4. Generate keystream from hybrid chaos
+    4. Generate keystream from hybrid Butterfly
     5. Post-process with HKDF-SHA256 for final key
     
     Parameters:
@@ -98,7 +99,7 @@ class ChaoticKDF:
             'sine_x0': (sine_seed / max_val) * 0.8 + 0.1  # [0.1, 0.9]
         }
     
-    def derive_key(self, key_length, info=b"chaos-crypto-key"):
+    def derive_key(self, key_length, info=b"Butterfly-crypto-key"):
         """
         Derive cryptographic key of specified length.
         
@@ -121,11 +122,13 @@ class ChaoticKDF:
         )
         
         # Post-process with HKDF for cryptographic strength
-        # Extract phase
-        prk = hkdf_extract(self.salt, raw_keystream.tobytes(), hash=hashlib.sha256)
-        
-        # Expand phase
-        key = hkdf_expand(prk, info, key_length, hash=hashlib.sha256)
+        hkdf = HKDF(
+            algorithm=hashes.SHA256(),
+            length=key_length,
+            salt=self.salt,
+            info=info,
+        )
+        key = hkdf.derive(raw_keystream.tobytes())
         
         return key
     
@@ -155,8 +158,13 @@ class ChaoticKDF:
             
             if length <= MAX_HKDF_LENGTH:
                 # Apply HKDF whitening for smaller keystreams
-                prk = hkdf_extract(self.salt, keystream.tobytes(), hash=hashlib.sha256)
-                return hkdf_expand(prk, b"keystream", length, hash=hashlib.sha256)
+                hkdf = HKDF(
+                    algorithm=hashes.SHA256(),
+                    length=length,
+                    salt=self.salt,
+                    info=b"keystream",
+                )
+                return hkdf.derive(keystream.tobytes())
             else:
                 # For larger keystreams, use chunked approach
                 result = bytearray()
@@ -168,12 +176,15 @@ class ChaoticKDF:
                     end = min(start + MAX_HKDF_LENGTH, length)
                     chunk_len = end - start
                     
-                    # Extract PRK from this chunk
+                    # Process chunk with HKDF
                     chunk = keystream_bytes[start:end]
-                    prk = hkdf_extract(self.salt, chunk, hash=hashlib.sha256)
-                    
-                    # Expand to required length
-                    expanded = hkdf_expand(prk, b"keystream", chunk_len, hash=hashlib.sha256)
+                    hkdf = HKDF(
+                        algorithm=hashes.SHA256(),
+                        length=chunk_len,
+                        salt=self.salt,
+                        info=b"keystream",
+                    )
+                    expanded = hkdf.derive(chunk)
                     result.extend(expanded)
                 
                 return bytes(result)

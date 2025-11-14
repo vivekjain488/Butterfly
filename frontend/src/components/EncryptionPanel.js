@@ -73,30 +73,38 @@ function EncryptionPanel({ seed, setSeed, params, mixing, setIsEncrypting }) {
 
   return (
     <div className="glass-card p-6">
-      <h2 className="section-title">Encryption Console</h2>
+      <h2 className="section-title flex items-center gap-3">
+        <span className="text-4xl animate-bounce-slow">🔐</span>
+        <span>Encryption Console</span>
+        <span className="text-2xl animate-sparkle">✨</span>
+      </h2>
 
       {/* Seed Input */}
       <div className="mb-6">
-        <label className="block text-teal-neon mb-2 font-semibold">
-          🔑 Secret Seed / Password
+        <label className="block text-teal-neon mb-2 font-semibold text-lg flex items-center gap-2">
+          <span className="animate-wiggle">🔑</span>
+          Secret Seed / Password
         </label>
         <div className="flex gap-2">
           <input
             type="text"
             value={seed}
             onChange={(e) => setSeed(e.target.value)}
-            placeholder="Enter your secret seed..."
+            placeholder="Enter your secret seed... 🎯"
             className="input-cyber flex-1"
           />
           <button
             onClick={generateRandomSeed}
-            className="btn-secondary"
+            className="btn-secondary flex items-center gap-2"
+            title="Generate a random seed!"
           >
+            <span>🎲</span>
             Random
           </button>
         </div>
-        <p className="text-xs text-teal-dark mt-1">
-          ⚠️ Tiny seed changes produce completely different ciphertext (avalanche effect)
+        <p className="text-xs text-teal-dark mt-2 flex items-center gap-1">
+          <span className="text-yellow-400">⚠️</span>
+          Tiny seed changes produce completely different ciphertext (avalanche effect) 🌊
         </p>
       </div>
 
@@ -143,25 +151,50 @@ function EncryptionPanel({ seed, setSeed, params, mixing, setIsEncrypting }) {
           <button
             onClick={handleEncrypt}
             disabled={loading || !plaintext || !seed}
-            className="btn-primary w-full disabled:opacity-50 disabled:cursor-not-allowed"
+            className="btn-primary w-full disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
           >
-            {loading ? '🔄 Encrypting...' : '🔐 Encrypt'}
+            {loading ? (
+              <>
+                <span className="animate-spin">🔄</span>
+                <span>Encrypting...</span>
+              </>
+            ) : (
+              <>
+                <span>🔐</span>
+                <span>Encrypt</span>
+                <span className="animate-sparkle">✨</span>
+              </>
+            )}
           </button>
 
           {ciphertext && (
-            <div>
-              <label className="block text-teal-neon mb-2 font-semibold">
-                🔒 Ciphertext (Base64)
+            <div className="animate-pulse-glow">
+              <label className="block text-teal-neon mb-2 font-semibold flex items-center gap-2">
+                <span className="animate-sparkle">🔒</span>
+                Ciphertext (Base64)
+                <span className="text-green-400 animate-bounce-slow">✓</span>
               </label>
               <textarea
                 value={ciphertext}
                 readOnly
                 rows="4"
-                className="input-cyber w-full resize-none font-mono text-xs"
+                className="input-cyber w-full resize-none font-mono text-xs bg-teal-neon/5"
               />
-              <p className="text-xs text-teal-dark mt-1">
-                ✅ Length: {ciphertext.length} characters
-              </p>
+              <div className="flex items-center justify-between mt-2">
+                <p className="text-xs text-teal-dark flex items-center gap-1">
+                  <span className="text-green-400">✅</span>
+                  Length: <span className="font-bold text-teal-neon">{ciphertext.length}</span> characters
+                </p>
+                <button
+                  onClick={() => {
+                    navigator.clipboard.writeText(ciphertext);
+                    alert('Ciphertext copied! 📋');
+                  }}
+                  className="text-xs btn-secondary py-1 px-2 text-xs"
+                >
+                  📋 Copy
+                </button>
+              </div>
             </div>
           )}
         </div>
@@ -186,21 +219,34 @@ function EncryptionPanel({ seed, setSeed, params, mixing, setIsEncrypting }) {
           <button
             onClick={handleDecrypt}
             disabled={loading || !ciphertext || !seed}
-            className="btn-primary w-full disabled:opacity-50 disabled:cursor-not-allowed"
+            className="btn-primary w-full disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
           >
-            {loading ? '🔄 Decrypting...' : '🔓 Decrypt'}
+            {loading ? (
+              <>
+                <span className="animate-spin">🔄</span>
+                <span>Decrypting...</span>
+              </>
+            ) : (
+              <>
+                <span>🔓</span>
+                <span>Decrypt</span>
+                <span className="animate-sparkle">✨</span>
+              </>
+            )}
           </button>
 
           {decrypted && (
-            <div>
-              <label className="block text-teal-neon mb-2 font-semibold">
-                ✅ Decrypted Message
+            <div className="animate-pulse-glow">
+              <label className="block text-teal-neon mb-2 font-semibold flex items-center gap-2">
+                <span className="text-green-400 animate-bounce-slow">✅</span>
+                Decrypted Message
+                <span className="text-green-400 animate-sparkle">🎉</span>
               </label>
               <textarea
                 value={decrypted}
                 readOnly
                 rows="4"
-                className="input-cyber w-full resize-none bg-teal-neon/10"
+                className="input-cyber w-full resize-none bg-green-400/10 border-green-400/30"
               />
             </div>
           )}

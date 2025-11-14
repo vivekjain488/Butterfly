@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { LineChart, Line, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 
 function MetricsDashboard({ seed, params, mixing }) {
   const [metrics, setMetrics] = useState({
@@ -78,6 +78,20 @@ function MetricsDashboard({ seed, params, mixing }) {
       setLoading({ ...loading, statistical: false });
     }
   };
+
+  // Auto-fetch entropy when seed changes for quicker feedback
+  useEffect(() => {
+    if (seed) {
+      computeEntropy();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [seed]);
+
+  // Auto-fetch lyapunov when params change
+  useEffect(() => {
+    computeLyapunov();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [params]);
 
   return (
     <div className="glass-card p-6">
@@ -197,7 +211,7 @@ function MetricsDashboard({ seed, params, mixing }) {
                       </span>
                     </div>
                     <p className="text-xs text-teal-dark mt-3">
-                      λ₁ &gt; 0 indicates exponential divergence (chaos)
+                      λ₁ &gt; 0 indicates exponential divergence (Butterfly)
                     </p>
                   </div>
                 </div>

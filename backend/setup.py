@@ -1,9 +1,9 @@
 from setuptools import setup, find_packages
 
 setup(
-    name="chaos-crypto",
+    name="Butterfly-crypto",
     version="0.1.0",
-    description="Research-grade cryptosystem based on deterministic chaos",
+    description="Research-grade cryptosystem based on deterministic Butterfly",
     authors=["Aditi Singh", "Vivek Jain"],
     packages=find_packages(),
     python_requires=">=3.9",

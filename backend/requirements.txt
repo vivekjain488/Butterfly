@@ -9,7 +9,6 @@ flask-cors>=4.0.0
 
 # Cryptographic utilities
 cryptography>=41.0.0
-hkdf>=0.0.3
 
 # Data processing
 pandas>=2.0.0

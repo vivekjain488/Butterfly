@@ -158,7 +158,7 @@ class HybridChaoticMap:
     def _mix_bytes(self, b1, b2, b3, b4):
         """
         Mix byte streams using chaotic coefficients.
-        Uses weighted combination + XOR for nonlinearity.
+        Uses weighted combination + multiple XOR layers + bit rotation for strong diffusion.
         """
         # Convert to float for weighted mixing
         w1 = (self.alpha * b1.astype(np.float64)) % 256
@@ -166,14 +166,21 @@ class HybridChaoticMap:
         w3 = (self.gamma * b3.astype(np.float64)) % 256
         w4 = (self.delta * b4.astype(np.float64)) % 256
         
-        # Combine via modular addition
+        # Layer 1: Modular addition
         mixed_add = (w1 + w2 + w3 + w4) % 256
         
-        # Additional XOR mixing for nonlinearity
-        mixed_xor = b1 ^ b2 ^ b3 ^ b4
+        # Layer 2: Multi-stage XOR with rotations for better bit diffusion
+        xor1 = b1 ^ b2
+        xor2 = b3 ^ b4
+        rot1 = np.roll(xor1, 3)  # Rotate bits for cross-contamination
+        rot2 = np.roll(xor2, 5)
+        mixed_xor = xor1 ^ xor2 ^ rot1 ^ rot2
         
-        # Final combination (convert to int16 first to avoid overflow)
-        result = ((mixed_add.astype(np.int16) + mixed_xor.astype(np.int16)) % 256).astype(np.uint8)
+        # Layer 3: Combine addition and XOR with bit rotation
+        intermediate = ((mixed_add.astype(np.int16) + mixed_xor.astype(np.int16)) % 256).astype(np.uint8)
+        
+        # Layer 4: Final XOR with rotated original streams
+        result = intermediate ^ np.roll(b1, 1) ^ np.roll(b2, 2)
         
         return result
     

@@ -169,18 +169,18 @@ def test_avalanche():
     """Test avalanche calculations"""
     print("Testing Avalanche Effect...")
     
-    from crypto.cipher import ChaosCipher
+    from crypto.cipher import ButterflyCipher
     
     # Setup
     seed = "test_password"
     plaintext = "The quick brown fox jumps over the lazy dog"
     
     # Test 1: Plaintext avalanche
-    cipher = ChaosCipher(seed)
+    cipher = ButterflyCipher(seed)
     
     def encrypt_func(pt):
         # Create new cipher instance to reset state
-        c = ChaosCipher(seed)
+        c = ButterflyCipher(seed)
         return c.encrypt(pt)
     
     results = avalanche_test(encrypt_func, plaintext.encode(), n_trials=50)
@@ -192,7 +192,7 @@ def test_avalanche():
     
     # Test 2: Seed sensitivity
     results_seed = avalanche_test_seed_sensitivity(
-        ChaosCipher, plaintext, seed, n_trials=20
+        ButterflyCipher, plaintext, seed, n_trials=20
     )
     
     print(f"✓ Seed Sensitivity:")

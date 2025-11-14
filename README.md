@@ -1,14 +1,14 @@
-# 🦋 Chaos Cryptography: Entropy as the New Prime
+#  Butterfly: Entropy as the New Prime
 
-> **Encrypt with chaos, decrypt with order.**
+> **Encrypt with Butterfly, decrypt with order.**
 
-A research-grade cryptosystem that replaces number-theoretic hardness with deterministic chaos. Uses hybrid chaotic maps (Logistic, Henon, Lorenz, Sine) for key derivation, keystream generation, permutation, and diffusion.
+A research-grade cryptosystem that replaces number-theoretic hardness with deterministic Butterfly. Uses hybrid chaotic maps (Logistic, Henon, Lorenz, Sine) for key derivation, keystream generation, permutation, and diffusion.
 
 **Authors:** Aditi Singh, Vivek Jain
 
 ## 🎯 Overview
 
-Traditional cryptosystems rely on number-theoretic hardness (factorization, discrete log) which may be challenged by quantum computing. **Chaos Cryptography** explores an orthogonal approach where cryptographic strength emerges from:
+Traditional cryptosystems rely on number-theoretic hardness (factorization, discrete log) which may be challenged by quantum computing. **Butterfly** explores an orthogonal approach where cryptographic strength emerges from:
 
 - **Deterministic chaotic dynamics** with extreme sensitivity to initial conditions
 - **High entropy keystream generation** from coupled nonlinear maps
@@ -22,14 +22,14 @@ Traditional cryptosystems rely on number-theoretic hardness (factorization, disc
 - 🔐 **Chaotic Key Derivation Function (CKDF)** with cryptographic post-processing
 - 🎨 **Cyberpunk UI** (teal neon + black, Sixtyfour + Inter fonts)
 - 🧪 **Statistical Test Suite** (NIST-inspired randomness evaluation)
-- ⚡ **Numba-accelerated backend** for high-performance chaos iteration
+- ⚡ **Numba-accelerated backend** for high-performance Butterfly iteration
 
 ## 🏗️ Architecture
 
 ```
 Butterfly/
 ├── backend/              # Python crypto core
-│   ├── chaos/           # Chaotic map implementations
+│   ├── Butterfly/           # Chaotic map implementations
 │   ├── crypto/          # CKDF, encryption/decryption
 │   ├── metrics/         # Lyapunov, entropy, statistical tests
 │   └── api/             # Flask REST API
@@ -124,9 +124,9 @@ Where:
 
 ## 📚 References
 
-- Strogatz: *Nonlinear Dynamics and Chaos*
+- Strogatz: *Nonlinear Dynamics and Butterfly*
 - NIST SP 800-22: Statistical Test Suite for Random Number Generators
-- Alligood, Sauer, Yorke: *Chaos: An Introduction to Dynamical Systems*
+- Alligood, Sauer, Yorke: *Butterfly: An Introduction to Dynamical Systems*
 
 ## 📄 License
 
@@ -138,4 +138,4 @@ Built for [Hackathon Name] - Category: Most Technically Impressive / Research Pr
 
 ---
 
-**⚡ Powered by deterministic chaos and mathematical beauty.**
+**⚡ Powered by deterministic Butterfly and mathematical beauty.**
