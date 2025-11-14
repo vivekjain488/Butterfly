@@ -24,6 +24,7 @@ function MetricsDashboard({ seed, params, mixing }) {
       setMetrics({ ...metrics, entropy: response.data });
     } catch (error) {
       console.error('Entropy calculation failed:', error);
+      setMetrics({ ...metrics, entropy: { error: error.response?.data?.error || 'Failed to compute entropy' } });
     } finally {
       setLoading({ ...loading, entropy: false });
     }
@@ -39,6 +40,7 @@ function MetricsDashboard({ seed, params, mixing }) {
       setMetrics({ ...metrics, lyapunov: response.data });
     } catch (error) {
       console.error('Lyapunov calculation failed:', error);
+      setMetrics({ ...metrics, lyapunov: { error: error.response?.data?.error || 'Failed to compute Lyapunov exponent' } });
     } finally {
       setLoading({ ...loading, lyapunov: false });
     }
@@ -57,6 +59,7 @@ function MetricsDashboard({ seed, params, mixing }) {
       setMetrics({ ...metrics, avalanche: response.data });
     } catch (error) {
       console.error('Avalanche test failed:', error);
+      setMetrics({ ...metrics, avalanche: { error: error.response?.data?.error || 'Failed to run avalanche test' } });
     } finally {
       setLoading({ ...loading, avalanche: false });
     }
@@ -74,6 +77,7 @@ function MetricsDashboard({ seed, params, mixing }) {
       setMetrics({ ...metrics, statistical: response.data });
     } catch (error) {
       console.error('Statistical tests failed:', error);
+      setMetrics({ ...metrics, statistical: { error: error.response?.data?.error || 'Failed to run statistical tests' } });
     } finally {
       setLoading({ ...loading, statistical: false });
     }
@@ -160,7 +164,15 @@ function MetricsDashboard({ seed, params, mixing }) {
             </button>
           </div>
 
-          {metrics.entropy && (
+          {metrics.entropy?.error && (
+            <div className="p-4 border-2 border-red-400 rounded-2xl bg-red-50 animate-wiggle">
+              <p className="text-red-600 text-sm flex items-center gap-2 font-semibold">
+                <span className="text-2xl">❌</span>
+                <span>{metrics.entropy.error}</span>
+              </p>
+            </div>
+          )}
+          {metrics.entropy && !metrics.entropy.error && (
             <div className="space-y-6">
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 <div className="p-6 border-2 border-primary/20 rounded-2xl text-center glass-card hover:scale-105 transition-transform bg-white">
@@ -272,7 +284,15 @@ function MetricsDashboard({ seed, params, mixing }) {
             </button>
           </div>
 
-          {metrics.lyapunov && (
+          {metrics.lyapunov?.error && (
+            <div className="p-4 border-2 border-red-400 rounded-2xl bg-red-50 animate-wiggle">
+              <p className="text-red-600 text-sm flex items-center gap-2 font-semibold">
+                <span className="text-2xl">❌</span>
+                <span>{metrics.lyapunov.error}</span>
+              </p>
+            </div>
+          )}
+          {metrics.lyapunov && !metrics.lyapunov.error && (
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {Object.entries(metrics.lyapunov).map(([mapName, data]) => (
                 <div key={mapName} className="p-6 border-2 border-primary/20 rounded-2xl glass-card bg-white">
@@ -338,7 +358,15 @@ function MetricsDashboard({ seed, params, mixing }) {
             </button>
           </div>
 
-          {metrics.avalanche && (
+          {metrics.avalanche?.error && (
+            <div className="p-4 border-2 border-red-400 rounded-2xl bg-red-50 animate-wiggle">
+              <p className="text-red-600 text-sm flex items-center gap-2 font-semibold">
+                <span className="text-2xl">❌</span>
+                <span>{metrics.avalanche.error}</span>
+              </p>
+            </div>
+          )}
+          {metrics.avalanche && !metrics.avalanche.error && (
             <div className="space-y-6">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="p-6 border-2 border-primary/20 rounded-2xl text-center glass-card bg-white hover:scale-105 transition-transform">
@@ -430,7 +458,15 @@ function MetricsDashboard({ seed, params, mixing }) {
             </button>
           </div>
 
-          {metrics.statistical && (
+          {metrics.statistical?.error && (
+            <div className="p-4 border-2 border-red-400 rounded-2xl bg-red-50 animate-wiggle">
+              <p className="text-red-600 text-sm flex items-center gap-2 font-semibold">
+                <span className="text-2xl">❌</span>
+                <span>{metrics.statistical.error}</span>
+              </p>
+            </div>
+          )}
+          {metrics.statistical && !metrics.statistical.error && (
             <div className="space-y-6">
               {metrics.statistical.summary && (
                 <div className="p-6 border-2 border-primary/20 rounded-2xl bg-gradient-to-r from-primary/10 via-accent/10 to-secondary/10 glass-card">
