@@ -255,19 +255,37 @@ function EncryptionPanel({ seed, setSeed, params, mixing, setIsEncrypting }) {
 
       {/* Error Display */}
       {error && (
-        <div className="mt-4 p-3 border border-red-500 rounded-lg bg-red-500/10">
-          <p className="text-red-400 text-sm">❌ {error}</p>
+        <div className="mt-4 p-4 border-2 border-red-500 rounded-xl bg-red-500/20 animate-wiggle">
+          <p className="text-red-400 text-sm flex items-center gap-2 font-semibold">
+            <span className="text-2xl">❌</span>
+            <span>{error}</span>
+          </p>
         </div>
       )}
 
       {/* Info Box */}
-      <div className="mt-6 p-4 border border-teal-dark/30 rounded-lg bg-teal-dark/5">
-        <h4 className="text-teal-neon font-semibold mb-2">How it works:</h4>
-        <ul className="text-sm text-teal-dark space-y-1">
-          <li>1️⃣ <strong>CKDF:</strong> Seed → Chaotic maps → HKDF-SHA256 → Key</li>
-          <li>2️⃣ <strong>Permutation:</strong> Henon map generates block permutation</li>
-          <li>3️⃣ <strong>Diffusion:</strong> XOR with hybrid chaotic keystream</li>
-          <li>4️⃣ <strong>Security:</strong> Lyapunov λ₁ &gt; 0 ensures avalanche effect</li>
+      <div className="mt-6 p-5 border-2 border-teal-dark/30 rounded-xl bg-gradient-to-br from-teal-dark/10 to-accent/10 glass-card">
+        <h4 className="text-teal-neon font-bold mb-3 text-lg flex items-center gap-2">
+          <span className="animate-sparkle">🎓</span>
+          How it works:
+        </h4>
+        <ul className="text-sm text-teal-dark space-y-2">
+          <li className="flex items-start gap-2">
+            <span className="text-xl">1️⃣</span>
+            <span><strong className="text-teal-neon">CKDF:</strong> Seed → Chaotic maps → HKDF-SHA256 → Key 🔑</span>
+          </li>
+          <li className="flex items-start gap-2">
+            <span className="text-xl">2️⃣</span>
+            <span><strong className="text-teal-neon">Permutation:</strong> Henon map generates block permutation 🔄</span>
+          </li>
+          <li className="flex items-start gap-2">
+            <span className="text-xl">3️⃣</span>
+            <span><strong className="text-teal-neon">Diffusion:</strong> XOR with hybrid chaotic keystream 🌊</span>
+          </li>
+          <li className="flex items-start gap-2">
+            <span className="text-xl">4️⃣</span>
+            <span><strong className="text-teal-neon">Security:</strong> Lyapunov λ₁ &gt; 0 ensures avalanche effect ⚡</span>
+          </li>
         </ul>
       </div>
     </div>

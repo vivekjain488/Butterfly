@@ -95,7 +95,11 @@ function MetricsDashboard({ seed, params, mixing }) {
 
   return (
     <div className="glass-card p-6">
-      <h2 className="section-title">📊 Metrics Dashboard</h2>
+      <h2 className="section-title flex items-center gap-3">
+        <span className="text-4xl animate-bounce-slow">📊</span>
+        <span>Metrics Dashboard</span>
+        <span className="text-2xl animate-sparkle">✨</span>
+      </h2>
 
       {/* Tabs */}
       <div className="flex flex-wrap gap-2 mb-6">
@@ -103,12 +107,13 @@ function MetricsDashboard({ seed, params, mixing }) {
           <button
             key={tab}
             onClick={() => setActiveTab(tab)}
-            className={`px-4 py-2 rounded-lg font-semibold capitalize transition-all ${
+            className={`px-4 py-2 rounded-xl font-semibold capitalize transition-all flex items-center gap-2 ${
               activeTab === tab
-                ? 'bg-teal-neon text-cyber-bg'
-                : 'bg-transparent border border-teal-dark text-teal-dark hover:border-teal-neon'
+                ? 'bg-teal-neon text-cyber-bg scale-105 animate-pulse-glow'
+                : 'bg-transparent border-2 border-teal-dark text-teal-dark hover:border-teal-neon hover:scale-105'
             }`}
           >
+            {activeTab === tab && <span>✨</span>}
             {tab}
           </button>
         ))}
@@ -118,13 +123,26 @@ function MetricsDashboard({ seed, params, mixing }) {
       {activeTab === 'entropy' && (
         <div>
           <div className="flex justify-between items-center mb-4">
-            <h3 className="text-xl text-teal-neon font-bold">Shannon Entropy Analysis</h3>
+            <h3 className="text-xl text-teal-neon font-bold flex items-center gap-2">
+              <span className="animate-wiggle">🎲</span>
+              Shannon Entropy Analysis
+            </h3>
             <button
               onClick={computeEntropy}
               disabled={loading.entropy || !seed}
-              className="btn-secondary disabled:opacity-50"
+              className="btn-secondary disabled:opacity-50 flex items-center gap-2"
             >
-              {loading.entropy ? '🔄 Computing...' : '▶️ Compute Entropy'}
+              {loading.entropy ? (
+                <>
+                  <span className="animate-spin">🔄</span>
+                  <span>Computing...</span>
+                </>
+              ) : (
+                <>
+                  <span>▶️</span>
+                  <span>Compute Entropy</span>
+                </>
+              )}
             </button>
           </div>
 
