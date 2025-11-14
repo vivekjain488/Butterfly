@@ -62,8 +62,16 @@ function App() {
 
           {/* Large Attractor Visualization */}
           <div className="glass-card p-6">
-            <h2 className="section-title">Lorenz Attractor Visualization</h2>
-            <div className="h-96">
+            <h2 className="section-title flex items-center gap-3">
+              <span className="text-4xl animate-bounce-slow">🌀</span>
+              <span>Lorenz Attractor Visualization</span>
+              <span className="text-2xl animate-sparkle">✨</span>
+            </h2>
+            <p className="text-teal-dark text-sm mb-4 flex items-center gap-2">
+              <span>👆</span>
+              <span>Watch the beautiful chaos unfold in real-time! Adjust parameters to see the magic happen! 🎨</span>
+            </p>
+            <div className="h-96 rounded-xl overflow-hidden border-2 border-teal-dark/30">
               <AttractorVisualization 
                 params={params} 
                 mixing={mixing}

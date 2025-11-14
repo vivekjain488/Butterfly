@@ -144,13 +144,33 @@ function AttractorVisualization({ params, mixing, isAnimating, showControls = fa
       <div ref={mountRef} className="w-full h-full" />
       
       {showControls && (
-        <div className="absolute top-4 right-4 glass-card p-3 text-xs">
-          <p className="text-teal-neon font-bold mb-2">Lorenz Parameters</p>
-          <p className="text-teal-dark">σ = {params.lorenz_sigma.toFixed(2)}</p>
-          <p className="text-teal-dark">ρ = {params.lorenz_rho.toFixed(2)}</p>
-          <p className="text-teal-dark">β = {params.lorenz_beta.toFixed(2)}</p>
+        <div className="absolute top-4 right-4 glass-card p-4 text-xs rounded-xl border-2 border-teal-dark/30">
+          <p className="text-teal-neon font-bold mb-3 flex items-center gap-2">
+            <span className="animate-wiggle">📐</span>
+            <span>Lorenz Parameters</span>
+          </p>
+          <div className="space-y-1">
+            <p className="text-teal-dark flex items-center gap-1">
+              <span className="text-teal-neon">σ</span>
+              <span>=</span>
+              <span className="font-bold text-teal-neon">{params.lorenz_sigma.toFixed(2)}</span>
+            </p>
+            <p className="text-teal-dark flex items-center gap-1">
+              <span className="text-teal-neon">ρ</span>
+              <span>=</span>
+              <span className="font-bold text-teal-neon">{params.lorenz_rho.toFixed(2)}</span>
+            </p>
+            <p className="text-teal-dark flex items-center gap-1">
+              <span className="text-teal-neon">β</span>
+              <span>=</span>
+              <span className="font-bold text-teal-neon">{params.lorenz_beta.toFixed(2)}</span>
+            </p>
+          </div>
           {isAnimating && (
-            <p className="text-teal-neon mt-2 animate-pulse">🔄 Encrypting...</p>
+            <p className="text-teal-neon mt-3 flex items-center gap-2 animate-pulse-glow font-semibold">
+              <span className="animate-spin">🔄</span>
+              <span>Encrypting...</span>
+            </p>
           )}
         </div>
       )}

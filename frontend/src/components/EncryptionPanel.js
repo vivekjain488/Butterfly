@@ -109,26 +109,30 @@ function EncryptionPanel({ seed, setSeed, params, mixing, setIsEncrypting }) {
       </div>
 
       {/* Mode Tabs */}
-      <div className="flex gap-2 mb-6">
+      <div className="flex gap-3 mb-6">
         <button
           onClick={() => setMode('encrypt')}
-          className={`px-4 py-2 rounded-lg font-semibold transition-all ${
+          className={`px-5 py-3 rounded-xl font-semibold transition-all flex items-center gap-2 flex-1 ${
             mode === 'encrypt'
-              ? 'bg-teal-neon text-cyber-bg'
-              : 'bg-transparent border border-teal-dark text-teal-dark hover:border-teal-neon'
+              ? 'bg-teal-neon text-cyber-bg scale-105 animate-pulse-glow shadow-neon-strong'
+              : 'bg-transparent border-2 border-teal-dark text-teal-dark hover:border-teal-neon hover:scale-105'
           }`}
         >
-          Encrypt
+          {mode === 'encrypt' && <span className="animate-sparkle">✨</span>}
+          <span>🔐</span>
+          <span>Encrypt</span>
         </button>
         <button
           onClick={() => setMode('decrypt')}
-          className={`px-4 py-2 rounded-lg font-semibold transition-all ${
+          className={`px-5 py-3 rounded-xl font-semibold transition-all flex items-center gap-2 flex-1 ${
             mode === 'decrypt'
-              ? 'bg-teal-neon text-cyber-bg'
-              : 'bg-transparent border border-teal-dark text-teal-dark hover:border-teal-neon'
+              ? 'bg-teal-neon text-cyber-bg scale-105 animate-pulse-glow shadow-neon-strong'
+              : 'bg-transparent border-2 border-teal-dark text-teal-dark hover:border-teal-neon hover:scale-105'
           }`}
         >
-          Decrypt
+          {mode === 'decrypt' && <span className="animate-sparkle">✨</span>}
+          <span>🔓</span>
+          <span>Decrypt</span>
         </button>
       </div>
 

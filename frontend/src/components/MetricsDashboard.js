@@ -149,31 +149,42 @@ function MetricsDashboard({ seed, params, mixing }) {
           {metrics.entropy && (
             <div className="space-y-4">
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <div className="p-4 border border-teal-dark/30 rounded-lg text-center">
-                  <p className="text-teal-dark text-sm mb-1">Entropy</p>
-                  <p className="text-3xl font-bold text-teal-neon">
+                <div className="p-4 border-2 border-teal-dark/30 rounded-xl text-center glass-card hover:scale-105 transition-transform">
+                  <p className="text-teal-dark text-sm mb-2 flex items-center justify-center gap-1">
+                    <span>📈</span>
+                    <span>Entropy</span>
+                  </p>
+                  <p className="text-4xl font-bold text-teal-neon animate-pulse-glow">
                     {metrics.entropy.entropy.toFixed(4)}
                   </p>
-                  <p className="text-xs text-teal-dark mt-1">bits/byte</p>
+                  <p className="text-xs text-teal-dark mt-2">bits/byte</p>
                 </div>
                 
-                <div className="p-4 border border-teal-dark/30 rounded-lg text-center">
-                  <p className="text-teal-dark text-sm mb-1">Target</p>
-                  <p className="text-3xl font-bold text-teal-dark">
+                <div className="p-4 border-2 border-teal-dark/30 rounded-xl text-center glass-card hover:scale-105 transition-transform">
+                  <p className="text-teal-dark text-sm mb-2 flex items-center justify-center gap-1">
+                    <span>🎯</span>
+                    <span>Target</span>
+                  </p>
+                  <p className="text-4xl font-bold text-teal-dark">
                     {metrics.entropy.target.toFixed(2)}
                   </p>
-                  <p className="text-xs text-teal-dark mt-1">Perfect randomness</p>
+                  <p className="text-xs text-teal-dark mt-2">Perfect randomness ✨</p>
                 </div>
 
-                <div className="p-4 border border-teal-dark/30 rounded-lg text-center">
-                  <p className="text-teal-dark text-sm mb-1">Quality</p>
-                  <p className={`text-3xl font-bold ${
+                <div className="p-4 border-2 border-teal-dark/30 rounded-xl text-center glass-card hover:scale-105 transition-transform">
+                  <p className="text-teal-dark text-sm mb-2 flex items-center justify-center gap-1">
+                    <span>⭐</span>
+                    <span>Quality</span>
+                  </p>
+                  <p className={`text-4xl font-bold animate-bounce-slow ${
                     metrics.entropy.quality === 'Excellent' ? 'text-green-400' :
                     metrics.entropy.quality === 'Good' ? 'text-yellow-400' : 'text-red-400'
                   }`}>
-                    {metrics.entropy.quality}
+                    {metrics.entropy.quality === 'Excellent' && '🌟'}
+                    {metrics.entropy.quality === 'Good' && '👍'}
+                    {metrics.entropy.quality === 'Poor' && '⚠️'}
                   </p>
-                  <p className="text-xs text-teal-dark mt-1">Assessment</p>
+                  <p className="text-xs text-teal-dark mt-2">{metrics.entropy.quality}</p>
                 </div>
               </div>
 

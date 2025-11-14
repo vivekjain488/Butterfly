@@ -40,21 +40,35 @@ function ParameterControls({ params, setParams, mixing, setMixing }) {
   return (
     <div className="glass-card p-6">
       <div className="flex justify-between items-center mb-4">
-        <h2 className="text-2xl font-heading text-teal-neon neon-text">
-          ⚙️ Parameter Controls
+        <h2 className="text-2xl font-heading text-teal-neon neon-text flex items-center gap-2">
+          <span className="text-3xl animate-wiggle">⚙️</span>
+          <span>Parameter Controls</span>
+          <span className="text-xl animate-sparkle">✨</span>
         </h2>
         <div className="flex gap-2">
           <button
             onClick={resetToDefaults}
-            className="btn-secondary text-sm"
+            className="btn-secondary text-sm flex items-center gap-1"
+            title="Reset all parameters to safe defaults"
           >
-            Reset to Safe Defaults
+            <span>🔄</span>
+            <span>Reset Defaults</span>
           </button>
           <button
             onClick={() => setIsExpanded(!isExpanded)}
-            className="btn-secondary text-sm"
+            className="btn-secondary text-sm flex items-center gap-1"
           >
-            {isExpanded ? 'Collapse' : 'Expand'}
+            {isExpanded ? (
+              <>
+                <span>📥</span>
+                <span>Collapse</span>
+              </>
+            ) : (
+              <>
+                <span>📤</span>
+                <span>Expand</span>
+              </>
+            )}
           </button>
         </div>
       </div>
@@ -200,8 +214,11 @@ function ParameterControls({ params, setParams, mixing, setMixing }) {
       )}
 
       {!isExpanded && (
-        <div className="text-center text-teal-dark text-sm mt-2">
-          Click "Expand" to adjust chaotic map parameters
+        <div className="text-center text-teal-dark text-sm mt-4 p-4 glass-card rounded-xl">
+          <p className="flex items-center justify-center gap-2">
+            <span className="text-2xl animate-bounce-slow">🎛️</span>
+            <span>Click "Expand" to adjust chaotic map parameters and watch the magic! ✨</span>
+          </p>
         </div>
       )}
     </div>
